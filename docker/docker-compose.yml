@@ -1,0 +1,41 @@
+php:
+    image: registry.webnet.fr:5000/phpfpm72
+    volumes_from:
+       - application
+    volumes:
+        - ./logs/fpm/:/var/log/
+        - ./config/php/7.2/:/etc/php/7.2/
+    environment:
+        RELAYHOST: smtp-recette.webnet.fr
+    links:
+        - db
+    tty: true
+nginx:
+    image: registry.webnet.fr:5000/nginx1102
+    ports:
+        - 80:80
+    volumes_from:
+       - application
+    volumes:
+        - ./logs/nginx/:/var/log/nginx
+        - ./config/nginx/:/etc/nginx/conf.d
+    links:
+        - php:fpm
+    tty: true
+application:
+    image: registry.webnet.fr:5000/application_symfony
+    volumes:
+        - ./www:/var/www/tennis
+        - ./logs/symfony:/var/www/tennis/var/logs
+    tty: true
+db:
+    image: registry.webnet.fr:5000/mysql57
+    ports:
+        - 3306:3306
+    volumes:
+        - ./mysql:/var/lib/mysql
+    environment:
+        MYSQL_ROOT_PASSWORD: toto44
+        MYSQL_DATABASE: ujsf
+        MYSQL_USER: ujsf
+        MYSQL_PASSWORD: toto44

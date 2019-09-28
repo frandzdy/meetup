@@ -1,0 +1,21 @@
+{
+  "name": "meet-up",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "brunch": "^2.4.2",
+    "css-brunch": "^2.6.1",
+    "javascript-brunch": "^2.0.0",
+    "sass-brunch": "^2.0.0",
+    "uglify-js-brunch": "^2.0.1"
+  },
+  "scripts": {
+    "b": "brunch b",
+    "bp": "brunch b -p",
+    "w": "brunch w"
+  },
+  "dependencies": {
+    "@fullcalendar/bootstrap": "^4.3.0",
+    "@fullcalendar/core": "^4.3.1"
+  }
+}
