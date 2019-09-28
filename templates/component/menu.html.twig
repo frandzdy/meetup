@@ -1,0 +1,47 @@
+{% set locales = {
+    fr: 'Français',
+    en: 'English'
+} %}
+
+{% set current_locale = app.request.locale %}
+
+<nav class="navbar navbar-fixed-top navbar-expand-lg navbar-expand-sm navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="{{ path('home') }}">Meet-up</a>
+        <div class="navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                    {% if app.user is not null %}
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {% if app.user.image is not null %}
+                                <img src="{{ asset(app.user.image.PathView) }}" alt="{{ app.user.image.alt }}" style="width:40px">
+                            {% endif %}
+                            {{ app.user.username }}
+                        </a>
+                        <!-- Here's the magic. Add the .animate and .slide-in classes to your .dropdown-menu and you're all set! -->
+                        <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ path('front_edit_person', {id: app.user.id}) }}">Mon compte</a>
+                            <a class="dropdown-item" href="{{ path('event_new') }}">Nouvelle évènements</a>
+                            <a class="dropdown-item" href="{{ path('event_index') }}">Liste des évènements</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item"href="{{ path('fos_user_security_logout') }}">Déconnexion</a>
+                        </div>
+                    {% else %}
+                        <!-- Here's the magic. Add the .animate and .slide-in classes to your .dropdown-menu and you're all set! -->
+                            <a class="btn btn-primary" href="{{ path('fos_user_security_login') }}">Se connecter</a>
+                    {% endif %}
+
+                </li>
+            </ul>
+        </div>
+        <select id="locale" class="col-1 custom-select">
+            {%- for locale, name in locales -%}
+                <option value="{{ locale }}" {{ locale == current_locale ? 'selected' }}
+                        data-target="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params') | merge(app.request.query.all) | merge({_locale: locale})) }}"
+                >
+                    {{- name|slice(0, 2)|upper -}}
+                </option>
+            {%- endfor -%}
+        </select>
+    </div>
+</nav>

@@ -1,0 +1,8 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ 'lg.person.create'|trans }}{% endblock %}
+
+{% block body %}
+    <h1>Edit Event</h1>
+    {{ include('event/_form.html.twig', {'button_label': 'Update'}) }}
+{% endblock %}

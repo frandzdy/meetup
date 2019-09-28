@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>{% block title %}Meetup Sport{% endblock %}</title>
+
+    {% block stylesheets %}
+{#        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.1.0/main.min.css">#}
+{#        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.1.0/main.min.css">#}
+{#        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@4.1.0/main.min.css">#}
+
+{#        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">#}
+{#        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">#}
+{#        <!-- Place your kit's code here -->#}
+{#        <script src="https://kit.fontawesome.com/8994c0a409.js" crossorigin="anonymous"></script>#}
+        <link rel="stylesheet" type="text/css" href="{{ preload(asset('css/vendors.css'), { as: 'style' }) }}">
+        <link rel="stylesheet" type="text/css" href="{{ preload(asset('css/app.css'), { as: 'style' }) }}">
+    {% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+</head>
+
+<body class="d-flex flex-column">
+        {# Si l'utilisateur est connecté #}
+        {{ include('component/menu.html.twig') }}
+
+    <div id="page-content">
+        <div class="container">
+            {% block body %}{% endblock %}
+
+            <div id="modals"></div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="modal-prototype" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg multipleModal" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="ModalLabel">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body"></div>
+                        <div class="modal-footer"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer id="sticky-footer" class="py-4 bg-dark text-white-50">
+        <hr>
+        <div class="container text-center">
+            <small>The sky's the limit &copy; {{ 'now'|date('Y') }} and beyond.</small>
+        </div>
+    </footer>
+    {% block javascripts %}
+        <script src="{{ preload(asset('js/app.js'), { as: 'script' }) }}"></script>
+        <script src="{{ preload(asset('js/vendors.js'), { as: 'script' }) }}"></script>
+        <script src="{{ preload(asset('bundles/fosjsrouting/js/router.min.js'), { as: 'script' }) }}"></script>
+        <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+        <script>require('assets/js/app/script.js');</script>
+        <script>require('assets/js/app/main.js');</script>
+    {% endblock %}
+
+</body>
+</html>

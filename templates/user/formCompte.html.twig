@@ -1,0 +1,76 @@
+{% form_theme form 'form/_form_layout.html.twig' %}
+{# Déclaration de variable #}
+{% set tailleChamp = 7 %}
+{% trans_default_domain 'message' %}
+
+<div class="row">
+    <div class="col-lg-10 col-xl-9 mx-auto">
+        <div class="card card-signin flex-row my-5">
+            <div class="card-img-left d-none d-md-flex">
+                {% if user.id is not null %}
+                    {% if user.image.url is defined %}
+                        <div class="col-sm-5 pull-right">
+                            <a class="" href="{{ asset(user.image.pathView) }}" title="{{ user.image.alt }}">
+                                <img src="{{ asset(user.image.PathView) }}" alt="{{ user.image.alt }}"
+                                     style="width:100px">
+                            </a>
+                        </div>
+                    {% else %}
+                        {% set fileSexe = '' %}
+                        {% if user.civilite %}
+                            {% if user.civilite.civilite == 'Monsieur' %}
+                                {% set fileSexe = 'homme' %}
+                            {% elseif user.civilite.civilite == 'Madame' or user.civilite == 'Mademoiselle' %}
+                                {% set fileSexe = 'femme' %}
+                            {% else %}
+                                {% set fileSexe = 'deux' %}
+                            {% endif %}
+                        {% endif %}
+
+                        {% set pathToBundle = 'bundles/ocplatform/img/avatar-' ~ fileSexe ~ '.jpg' %}
+                        <div class="col-sm-5 pull-right">
+                            <a class="" href="{{ asset(pathToBundle) }}" title="avatar-{{ fileSexe }}">
+                                <img src="{{ asset(pathToBundle) }}" alt="avatar-{{ fileSexe }}" style="width:100px">
+                            </a>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+            <div class="card-body">
+                {% if user.id is not null %}
+                    <h5>{{ "lg.person.edit"|trans }}</h5>
+                {% else %}
+                    <h5>{{ "lg.person.create"|trans }}</h5>
+                {% endif %}
+                {{ form_start(form, {'attr': {'class': 'form-signin'}}) }}
+                {# Les erreurs générales du formulaire. #}
+                {{ form_errors(form) }}
+                {{ form_row(form.civilite) }}
+                {{ form_row(form.username) }}
+                {{ form_row(form.firstname) }}
+                {{ form_row(form.lastname) }}
+                {{ form_row(form.adresse) }}
+                {{ form_row(form.codePostal) }}
+                {{ form_row(form.ville) }}
+                {{ form_row(form.dateNaissance) }}
+                {{ form_row(form.email) }}
+                {{ form_row(form.password.first) }}
+                {{ form_row(form.password.second) }}
+                {{ form_row(form.image.file) }}
+                <a class="btn btn-danger" href="{{ path('home') }}" class="btn btn-default">
+                    <i class="glyphicon glyphicon-chevron-left"></i>
+                    Retour à l'accueil
+                </a>
+                {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+                {# Génération automatique des champs pas encore écrits.
+                   Dans cet exemple, ce serait le champ CSRF (géré automatiquement par Symfony !)
+                   et tous les champs cachés (type « hidden »). #}
+                {{ form_rest(form) }}
+
+                {# Fermeture de la balise <form> du formulaire HTML #}
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>
+

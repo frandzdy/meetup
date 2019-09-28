@@ -1,0 +1,22 @@
+lg:
+    person:
+        create: 'Inscription'
+        edit: 'Edit profile'
+        show: 'Show profile'
+        info:
+            gender: 'Civilité :'
+            birthdate: 'Birthdate'
+            address: 'Address'
+            code_postal: 'Code postal'
+            city: 'City'
+    event:
+        create: 'Create sport event'
+        edit: 'Edit sport event'
+        show: 'Show sport event'
+    connexion:
+        identifiant: 'Identifiant'
+        password: 'PassWord'
+        rememberme: 'Remember me'
+        forgotten_password: 'Forgotten password ?'
+        log_in: 'Log in'
+        log_out: 'Log out'

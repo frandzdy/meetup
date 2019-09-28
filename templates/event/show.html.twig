@@ -1,0 +1,30 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Event{% endblock %}
+
+{% block body %}
+    <h1>Event</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ event.id }}</td>
+            </tr>
+            <tr>
+                <th>Titre</th>
+                <td>{{ event.title }}</td>
+            </tr>
+            <tr>
+                <th>Date de début</th>
+                <td>{{ event.startDate|date('d/m/Y') }}</td>
+            </tr>
+            <tr>
+                <th>Date de fin</th>
+                <td>{{ event.endDate|date('d/m/Y') }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    {{ include('event/_delete_form.html.twig') }}
+{% endblock %}

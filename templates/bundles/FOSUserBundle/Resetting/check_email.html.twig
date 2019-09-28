@@ -1,0 +1,25 @@
+{% extends "layout.html.twig" %}
+{% trans_default_domain 'FOSUserBundle' %}
+
+
+{% block title %}
+    Mot de passe envoyé - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-lg-10 col-xl-9 mx-auto">
+        <div class="card card-signin flex-row my-5">
+            <div class="card-img-left d-none d-md-flex">
+                <!-- Background image for card set in CSS! -->
+            </div>
+            <div class="card-body">
+                <h5 class="card-title text-center">Connectez-vous</h5>
+                <p>
+                    {{ 'resetting.check_email'|trans({'%tokenLifetime%': tokenLifetime})|nl2br }}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

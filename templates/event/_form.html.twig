@@ -1,0 +1,13 @@
+{{ form_start(form) }}
+<div class="form-label-group">
+    {{ form_widget(form.title) }}{{ form_label(form.title) }}{{ form_errors(form.title) }}
+</div>
+<div class="form-label-group">
+    {{ form_widget(form.startDate) }}{{ form_label(form.startDate) }} {{ form_errors(form.startDate) }}
+</div>
+<div class="form-label-group">
+    {{ form_widget(form.endDate) }}{{ form_label(form.endDate) }}{{ form_errors(form.endDate) }}
+</div>
+<a class="btn btn-danger" href="{{ path('event_index') }}">Annuler</a>
+<button class="btn btn-primary">{{ button_label|default('Sauvegarder') }}</button>
+{{ form_end(form) }}
