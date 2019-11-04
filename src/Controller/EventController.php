@@ -130,6 +130,7 @@ class EventController extends AbstractController
                 "textColor" => '#fff',
                 'edit_path' =>  $this->generateUrl('event_edit', ['id' => $event->getId(),'fromCalendar' => 1]),
                 'popoverTitle' => 'RDV téléphonique'
+
             );
         }
 
