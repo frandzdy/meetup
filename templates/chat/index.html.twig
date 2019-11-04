@@ -1,0 +1,55 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6" >
+                <h1>Liste des amis</h1>
+                {% for friend in user.myUsers if friend is defined %}
+                    <span class="pull-left friendLists connected_{{ friend.token }}" data-dis="" id="{{ friend.discussions[0].token }}">
+                        {% if friend.avatar %}
+                            <img src="{{ asset(uploads_directory ~ friend.avatar) }}" alt="{{ friend.avatar }}" id="avatar-{{ friend.token }}"
+                                 title="{{ friend.lastname ~ friend.firstname }}" class="avatar-chat right avatar responsive">
+                        {% endif %}
+                    </span>
+                {% else %}
+                    Aucun amis mon pauvre faut faire quelques choses :(
+                {% endfor %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-9">
+                <h1>Chat</h1>
+                <div class="col-lg-12" id="receiver" style=""></div>
+                <form class="col-lg-12" id="FormMessenger" method="post">
+                    <input type="hidden" id="receiverId" value=""/>
+                    <input type="hidden" id="groupeId" value=""/>
+                    <div class="type_msg">
+                        <div class="input_msg_write">
+                            <input type="text" class="write_msg" placeholder="Type a message" id="message" required />
+                            <button class="msg_send_btn" type="submit"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-3">
+                <button> Ajouter une nouvelle discussion</button>
+                <div class="list-group">
+                    <h1>Mes groupes</h1>
+                    {% for discussion in user.discussions if discussion is defined and discussion.type.id == 2 %}
+                        <a href="#" class="list-group-item list-group-item-action groupeLists" data-dis="" id="{{ discussion.token }}">
+                            <span style="color: red;width: 5px;border-radius: 5px;"></span>
+                            <p>{{ discussion.name }}</p>
+                        </a>
+                    {% else %}
+                        Aucun discussion mon pauvre faut faire quelques choses :(
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

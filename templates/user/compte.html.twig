@@ -1,14 +1,15 @@
 {# src/OC/PlatformBundle/Resources/views/Advert/edit.html.twig #}
-
 {% extends "layout.html.twig" %}
 {% trans_default_domain 'message' %}
 
 {% block title %}
-  {{  "lg.creation_compte"|trans }} - {{ parent() }}
+    {{ "lg.creation_compte"|trans }} - {{ parent() }}
 {% endblock %}
 
 {% block body %}
-
-  {{ include("user/formCompte.html.twig") }}
-
+    {{ include("user/formCompte.html.twig") }}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+  <script>require('assets/js/app/07-user.js');</script>
 {% endblock %}

@@ -22,9 +22,9 @@ class UserEditType extends AbstractType
      */
     public function getName()
     {
-        return 'imw_form_user_edit';
+        return 'sm_form_user_edit';
     }
-	
+
 	public function getParent(){
 
 		return new UserType();

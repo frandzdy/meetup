@@ -1,3 +1,4 @@
+{% trans_default_domain 'message' %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -6,63 +7,162 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <title>{% block title %}Meetup Sport{% endblock %}</title>
-
+    <script type="text/javascript">
+        dataLayer = [];
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        dataLayer = [{
+            'user_id': {{ app.user.id }},
+        }];
+        {% endif %}
+    </script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+            integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+            crossorigin=""></script>
     {% block stylesheets %}
-{#        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/core@4.1.0/main.min.css">#}
-{#        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@4.1.0/main.min.css">#}
-{#        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@4.1.0/main.min.css">#}
-
-{#        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">#}
-{#        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">#}
-{#        <!-- Place your kit's code here -->#}
-{#        <script src="https://kit.fontawesome.com/8994c0a409.js" crossorigin="anonymous"></script>#}
+        <script type="text/javascript" src="{{ asset('/tarteaucitron/tarteaucitron.js') }}"></script>
         <link rel="stylesheet" type="text/css" href="{{ preload(asset('css/vendors.css'), { as: 'style' }) }}">
         <link rel="stylesheet" type="text/css" href="{{ preload(asset('css/app.css'), { as: 'style' }) }}">
     {% endblock %}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_map_api_key }}libraries=places" async
+            defer></script>
+    <script>
+        var map;
+        var service;
+        var infowindow;
+
+        function initMap() {
+            var sydney = new google.maps.LatLng(-33.867, 151.195);
+
+            infowindow = new google.maps.InfoWindow();
+
+            map = new google.maps.Map(
+                document.getElementById('map'), {center: sydney, zoom: 15});
+
+            var request = {
+                query: 'Museum of Contemporary Art Australia',
+                fields: ['name', 'geometry'],
+            };
+
+            service = new google.maps.places.PlacesService(map);
+
+            service.findPlaceFromQuery(request, function (results, status) {
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
+                    for (var i = 0; i < results.length; i++) {
+                        createMarker(results[i]);
+                    }
+
+                    map.setCenter(results[0].geometry.location);
+                }
+            });
+        }
+
+        function createMarker(place) {
+            var marker = new google.maps.Marker({
+                map: map,
+                position: place.geometry.location
+            });
+
+            google.maps.event.addListener(marker, 'click', function () {
+                infowindow.setContent(place.name);
+                infowindow.open(map, this);
+            });
+        }
+    </script>
 </head>
 
-<body class="d-flex flex-column">
-        {# Si l'utilisateur est connecté #}
-        {{ include('component/menu.html.twig') }}
-
-    <div id="page-content">
-        <div class="container">
-            {% block body %}{% endblock %}
-
-            <div id="modals"></div>
-
-            <!-- Modal -->
-            <div class="modal fade" id="modal-prototype" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg multipleModal" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="ModalLabel">Modal title</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body"></div>
-                        <div class="modal-footer"></div>
-                    </div>
-                </div>
+<body id="page-top" class="sidebar-toggled">
+<div id="wrapper">
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Google Tag Manager (noscript) -->
+            <noscript>
+                <iframe src="https://www.googletagmanager.com/ns.html?id={{ google_ua }}"
+                        height="0" width="0" style="display:none;visibility:hidden"></iframe>
+            </noscript>
+            <!-- End Google Tag Manager (noscript) -->
+            {# Si l'utilisateur est connecté #}
+            {% if app.user is not null %}
+                {{ include('component/menu.html.twig') }}
+            {% endif %}
+            <div class="container-fluid">
+                {% block body %}{% endblock %}
             </div>
         </div>
+
+        <footer id="sticky-footer" class="py-4 bg-dark text-white-50">
+            <div class="container text-center">
+                <small>The sky's the limit &copy; {{ 'now'|date('Y') }} and beyond.</small>
+            </div>
+        </footer>
     </div>
-    <footer id="sticky-footer" class="py-4 bg-dark text-white-50">
-        <hr>
-        <div class="container text-center">
-            <small>The sky's the limit &copy; {{ 'now'|date('Y') }} and beyond.</small>
+</div>
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+<div id="modals"></div>
+<div id="modal-prototype">
+    <div class="modal-dialog modal-lg multipleModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
+                </button>
+                <h1 class="modal-title marginLeft20px"></h1>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer"></div>
         </div>
-    </footer>
-    {% block javascripts %}
-        <script src="{{ preload(asset('js/app.js'), { as: 'script' }) }}"></script>
-        <script src="{{ preload(asset('js/vendors.js'), { as: 'script' }) }}"></script>
-        <script src="{{ preload(asset('bundles/fosjsrouting/js/router.min.js'), { as: 'script' }) }}"></script>
-        <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
-        <script>require('assets/js/app/script.js');</script>
-        <script>require('assets/js/app/main.js');</script>
-    {% endblock %}
+    </div>
+</div>
+{% block javascripts %}
+    <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+    <script src="{{ preload(path('fos_js_routing_js', { callback: 'fos.Router.setData' }), { as: 'script' }) }}"></script>
+    <script src="{{ preload(asset('js/app.js'), { as: 'script' }) }}"></script>
+    <script src="{{ preload(asset('js/vendors.js'), { as: 'script' }) }}"></script>
+    <script>require('assets/js/app/01-main.js');</script>
+    <script>require('assets/js/app/05-script.js');</script>
+    {% if app.user is not null %}
+    <script>var userId = '{{ app.user.token }}';</script>
+    <script src="http://tennis-meetup.fr:1337/socket.io/socket.io.js"></script>
+    <script>require('assets/js/app/04-client.js');</script>
+    <script>require('assets/js/app/31-sb-admin-2.js');</script>
+    {% endif %}
+    <script type="text/javascript">
+        tarteaucitron.init({
+            "privacyUrl": "", /* Privacy policy url */
+
+            "cookieName": "tacsportmeetup", /* Cookie name */
+
+            "orientation": "bottom", /* Banner position (top - bottom) */
+            "showAlertSmall": false, /* Show the small banner on bottom right */
+            "cookieslist": true, /* Show the cookie list */
+
+            "adblocker": false, /* Show a Warning if an adblocker is detected */
+            "AcceptAllCta": true, /* Show the accept all button when highPrivacy on */
+            "highPrivacy": true, /* Disable auto consent */
+            "handleBrowserDNTRequest": false, /* If Do Not Track == 1, disallow all */
+
+            "removeCredit": false, /* Remove credit link */
+            "moreInfoLink": true, /* Show more info link */
+            "useExternalCss": false, /* If false, the tarteaucitron.css file will be loaded */
+
+            //"cookieDomain": ".my-multisite-domaine.fr", /* Shared cookie for multisite */
+
+            "readmoreLink": "/cookiespolicy" /* Change the default readmore link */
+        });
+        tarteaucitron.user.gtagUa = '{{ google_tag_ua }}';
+        tarteaucitron.user.gtagMore = function () {
+            dataLayer/* add here your optionnal gtag() */
+        };
+        (tarteaucitron.job = tarteaucitron.job || []).push('gtag');
+        tarteaucitron.user.googletagmanagerId = '{{ google_ua }}';
+        (tarteaucitron.job = tarteaucitron.job || []).push('googletagmanager');
+    </script>
+{% endblock %}
 
 </body>
 </html>

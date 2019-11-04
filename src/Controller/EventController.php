@@ -2,8 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\EventPlaces;
 use App\Entity\Events;
+use App\Entity\RefEquipement;
 use App\Form\EventType;
+use App\Service\CalendarService;
+use App\Service\GoogleApi;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,6 +15,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
 
 /**
  * @Route("/event")
@@ -39,15 +44,29 @@ class EventController extends AbstractController
     /**
      * @Route("/new", name="event_new", options={"expose"=true}, methods={"GET","POST"})
      */
-    public function new(Request $request, EntityManagerInterface $em): Response
+    public function new(Request $request, EntityManagerInterface $em, CalendarService $calendarService): Response
     {
+        $this->getUser();
         $event = new Events();
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
+        echo '<pre>';
+        dump($request->request->get('eventsPlace'));
+        echo '</pre>';
+        echo 'Methode : '.__METHOD__.' Ligne : '.__LINE__;
+        die;
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $refEquipement = $em->getRepository(RefEquipement::class)->findOneBy(
+                [
+                    'id' => $event->getEventsPlace()
+                ]
+            );
+            $event->setEventsPlace($refEquipement);
             $em->persist($event);
-            $em->flush();
+            $calendarService->createAndroidCalendar($event);
+            $calendarService->createIosCalendar($event);
 
             return $this->redirectToRoute('event_index');
         }
@@ -69,26 +88,27 @@ class EventController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit/{fromCalendar}", name="event_edit", requirements={"id"="\d+", "fromCalendat"="1|0"}, methods={"GET","POST"})
+     * @Route("/{id}/edit", name="event_edit", requirements={"id"="\d+"}, methods={"GET", "POST"})
      */
-    public function edit(Request $request, Events $event, bool $fromCalendar, EntityManagerInterface $em): Response
+    public function edit(Request $request, Events $event, EntityManagerInterface $em): Response
     {
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $refEquipement = $em->getRepository(RefEquipement::class)->findOneBy(
+                [
+                    'id' => $event->getEventsPlace()
+                ]
+            );
+            $event->setEventsPlace($refEquipement);
             $em->flush();
-            if ($fromCalendar) {
-
-                return new Response('<script type="text/javascript">window.parent.location.reload(true);</script>');
-            }
 
             return $this->redirectToRoute('event_index');
         }
 
         return $this->render('event/edit.html.twig', [
             'event' => $event,
-            'fromCalendar' => $fromCalendar,
             'form' => $form->createView(),
         ]);
     }
@@ -128,14 +148,29 @@ class EventController extends AbstractController
                 "color" => "#95b338",
                 'type' => 'meeting',
                 "textColor" => '#fff',
-                'edit_path' =>  $this->generateUrl('event_edit', ['id' => $event->getId(),'fromCalendar' => 1]),
-                'popoverTitle' => 'RDV téléphonique'
-
+                'edit_path' =>  $this->generateUrl('event_edit', ['id' => $event->getId()]),
+                'popoverTitle' => $event->getTitle()
             );
         }
 
         return new JsonResponse([
             'events' => $events
         ]);
+    }
+
+    /**
+     * @Route(path="/autocomplete", name="front_event_places", options={"expose"=true}, methods={"POST"})
+     */
+    public function autocompleteEventPlaces(Request $request, EntityManagerInterface $em, GoogleApi $googleApi)
+    {
+        if ($request->isXmlHttpRequest()) {
+            $search = $request->request->get('search') ?: null;
+            // $res = $em->getRepository(RefEquipement::class)->findEquipementAutocomplete($search);
+            $res = $googleApi->autocomplete($search);
+
+            return new JsonResponse($res, 200);
+        }
+
+        return new JsonResponse([], 500);
     }
 }

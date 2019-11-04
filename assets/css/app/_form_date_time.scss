@@ -1,0 +1,20 @@
+@mixin separate-date-time-picker($width) {
+  display: inline-block;
+  vertical-align: middle;
+  width: $width;
+}
+
+.datetimepicker-separate {
+
+  .datepicker-container {
+    @include separate-date-time-picker(100px);
+  }
+
+  .timepicker-container {
+    margin-left: 10px;
+  }
+}
+
+.timepicker-container {
+  @include separate-date-time-picker(50px);
+}

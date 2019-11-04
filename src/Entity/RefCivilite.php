@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 /**
  * RefCivilite
  *
- * @ORM\Table(name="ref_civilite")
+ * @ORM\Table(name="sm_ref_civilite")
  * @ORM\Entity(repositoryClass="App\Repository\RefCiviliteRepository")
  * @ORM\HasLifecycleCallbacks()
  */

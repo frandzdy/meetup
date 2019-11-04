@@ -1,0 +1,239 @@
+//.btn-sort {
+//  text-decoration: none !important;
+//  color: #ffffff !important;
+//}
+//
+//.icon-info {
+//  background-color: $color-secondar-dark !important;
+//  vertical-align: middle;
+//  width: 24px;
+//  height: 24px;
+//  display: inline-block;
+//  color: white;
+//  line-height: 24px;
+//  text-align: center;
+//  border-radius: 50%;
+//  font-size: 18px;
+//  font-family: serif;
+//  text-transform: lowercase;
+//  cursor: pointer;
+//
+//  &:before {
+//    content: 'i';
+//  }
+//}
+//
+//.small-square-button {
+//  background-color: $color-secondar-dark;
+//  color: #fff;
+//  height: 22px;
+//  width: 22px;
+//  line-height: 24px;
+//  text-align: center;
+//  font-size: 16px;
+//  cursor: pointer;
+//}
+//
+//.small-square-button-phone {
+//  background-color: $color-secondar-dark;
+//  color: #fff;
+//  height: 25px;
+//  width: 25px;
+//  line-height: 23px;
+//  text-align: center;
+//  font-size: 16px;
+//  cursor: pointer;
+//}
+//
+//.button {
+//  display: inline-block;
+//  border: none;
+//  @include border-radius(10px);
+//  background-color: $color-secondar-dark !important;
+//  color: #fff !important;
+//  text-decoration: none !important;
+//  min-height: 34px;
+//  cursor: pointer;
+//
+//  > span {
+//    display: inline-block;
+//    vertical-align: middle;
+//  }
+//}
+//
+//.btn.btn-small {
+//  font-size: 14px;
+//  line-height: 23px;
+//  padding: 0 15px;
+//
+//  .fa {
+//    font-size: 14px;
+//    margin-right: 10px;
+//  }
+//}
+//
+//.bouton-large {
+//  @extend .button;
+//
+//  font-size: 16px;
+//  width: 100%;
+//  text-align: center;
+//
+//  .icone {
+//    vertical-align: middle;
+//    @extend .sprite;
+//    width: 35px;
+//  }
+//}
+//
+//.button-auto-large {
+//  @extend .bouton-large;
+//
+//  width: auto;
+//  padding-left: 15px;
+//  padding-right: 15px;
+//
+//  > * {
+//    text-align: left;
+//  }
+//}
+//
+//.btn-al-envoiMail {
+//  @extend .button-auto-large;
+//
+//  .icone {
+//    @extend .sprite;
+//    background-position: -120px -160px;
+//  }
+//}
+//
+//.btn-al-plus {
+//  @extend .button-auto-large;
+//
+//  .icone {
+//    @extend .sprite;
+//    background-position: -240px -120px;
+//  }
+//}
+//
+//.btn-al-modif {
+//  @extend .button-auto-large;
+//
+//  .icone {
+//    @extend .sprite;
+//    background-position: -161px -160px;
+//  }
+//}
+//
+//.btn-al-reglage {
+//  @extend .button-auto-large;
+//
+//  .icone {
+//    @extend .sprite;
+//    background-position: -200px -160px;
+//  }
+//}
+//
+//.btn-al-dupliquer {
+//  @extend .button-auto-large;
+//
+//  .icone {
+//    @extend .sprite;
+//    background-position: -240px -200px;
+//  }
+//}
+//
+//.btn-al-save {
+//  @extend .button-auto-large;
+//
+//  .icone {
+//    @extend .sprite;
+//    background-position: -240px -280px;
+//  }
+//}
+//
+//.btn-al-analyse {
+//  @extend .button-auto-large;
+//  .icone{
+//    top: 10px !important;
+//    background-image: url("../../public/images/icone-voir-la-grille.png")
+//  }
+//}
+//
+//
+//.bouton-2 {
+//  background-color: $color-secondar-dark;
+//  color: #fff;
+//  text-align: center;
+//  width: 28px;
+//  height: 28px;
+//  @extend .sprite;
+//  &.b2-openClose {
+//    background-position: -6px -45px;
+//  }
+//  &.b2-Plus {
+//    background-position: -244px -125px;
+//  }
+//  &.b2-champ {}
+//  &.b2-agenda {
+//    background-position: -7px -327px;
+//    width: 24px;
+//    height: 25px;
+//  }
+//  &.b2-croix {
+//    background-position: -47px -327px;
+//    width: 24px;
+//    height: 25px;
+//  }
+//}
+//
+//.icone-carre {
+//  @extend .bouton-2;
+//  display: inline-block;
+//  width: 40px;
+//  height: 40px;
+//  margin-top: 5px;
+//  &.ic-folder {
+//    background-position: -239px -79px;
+//  }
+//  &.ic-list {
+//    background-position: 0px -238px;
+//    margin-left: 10px;
+//  }
+//}
+//
+//.ctn-btn-right {
+//  text-align: right;
+//}
+//
+//.ctn-btn-center {
+//  text-align: center;
+//}
+//
+//
+//
+//.btn {
+//  line-height: 40px;
+//  padding: 0 20px;
+//  outline: none !important;
+//  font-size: 15px;
+//  @include border-radius(10px);
+//  margin-left: 10px;
+//
+//  &.btn-primary {
+//    background-color: $color-secondar-dark !important;
+//  }
+//
+//  &.btn-default {
+//    background-color: #ffffff !important;
+//  }
+//
+//  .fa {
+//    font-size: 24px;
+//    margin-right: 12px;
+//  }
+//
+//  & > * {
+//    vertical-align: middle;
+//  }
+//}

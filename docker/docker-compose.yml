@@ -36,6 +36,6 @@ db:
         - ./mysql:/var/lib/mysql
     environment:
         MYSQL_ROOT_PASSWORD: toto44
-        MYSQL_DATABASE: ujsf
+        MYSQL_DATABASE: sport
         MYSQL_USER: ujsf
         MYSQL_PASSWORD: toto44

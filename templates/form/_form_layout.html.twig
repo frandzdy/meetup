@@ -1,2 +1,303 @@
-{% use 'bootstrap_4_layout.html.twig' %}
+{% use "form_div_layout.html.twig" %}
 
+{%- block form_row -%}
+    <div class="form-row">
+        {% if label is not same as(false) %}
+            <div class="label-container">
+                {{- form_label(form) -}}
+            </div>
+        {% endif %}
+        <div class="widget-container">
+            {{- form_widget(form) -}}
+            <div class="errors errors-message">
+                {{- form_errors(form) -}}
+            </div>
+        </div>
+    </div>
+{%- endblock -%}
+
+
+
+{% block date_widget %}
+    <div class="datepicker-container">
+        <div>
+            {% set attr = attr | merge({class: attr.class | default('') ~ ' datepicker'}) %}
+            <input type="text" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+        </div>
+        <div class="datepicker-btn-container">
+            {% if not disabled %}
+                <span class="datepicker-btn fa fa-calendar"></span>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block datetime_widget %}
+    <div class="datetimepicker-container">
+        <div>
+            {% set attr = attr | merge({class: attr.class | default('') ~ ' datetimepicker'}) %}
+            <input type="text" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+            <span class="add-on"><i class="icon-remove"></i></span>
+            <span class="add-on"><i class="icon-th"></i></span>
+        </div>
+        <div class="datepicker-btn-container">
+            {% if not disabled %}
+                <span class="datetimepicker-btn fa fa-calendar"></span>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+
+
+{%- block checkbox_row -%}
+    <div class="expanded-element-container">
+        {{- form_widget(form) -}}
+        {{- form_label(form) -}}
+    </div>
+{%- endblock -%}
+
+
+
+{%- block choice_widget_expanded -%}
+    <div {{ block('widget_container_attributes') }}>
+        <div class="row">
+            {%- for child in form -%}
+                <div class="col-md-4">
+                    {{- form_row(child) -}}
+                </div>
+            {%- endfor -%}
+        </div>
+    </div>
+{%- endblock -%}
+
+
+
+{% block double_select_widget %}
+    <div class="double-select">
+        <div>
+            {% set attr = attr | merge({class: 'double-select-hidden'}) %}
+            <select {{ block('widget_attributes') }} multiple>
+                {% for choice in selected_choices %}
+                    <option value="{{ choice.value }}" selected>{{ choice.label }}</option>
+                {% endfor %}
+            </select>
+
+            {% if label_selected %}
+                <label for="{{ id }}_selected" {{ required ? 'class="required"' }}>{{ label_selected }}</label>
+            {% endif %}
+            <select multiple size="8" class="double-select-selected" id="{{ id }}_selected">
+                {% for choice in selected_choices %}
+                    <option value="{{ choice.value }}">{{ choice.label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="double-select-buttons-container">
+            <i class="fa fa-chevron-right double-select-unselect"></i>
+            <i class="fa fa-chevron-left double-select-select"></i>
+        </div>
+
+        <div>
+            {% if label_non_selected %}
+                <label for="{{ id }}_non_selected">{{ label_non_selected }}</label>
+            {% endif %}
+            <select multiple size="8" class="double-select-not-selected" id="{{ id }}_non_selected">
+                {% for choice in not_selected_choices %}
+                    <option value="{{ choice.value }}">{{ choice.label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+{% block address_widget %}
+    <div class="address">
+        {{ form_widget(form.country) }}
+        <div class="errors errors-message">
+            {{ form_errors(form.country) }}
+        </div>
+        <div class="row">
+            <div class="col-xs-4">
+                {{ form_widget(form.zip) }}
+                <div class="errors errors-message">
+                    {{ form_errors(form.zip) }}
+                </div>
+            </div>
+            <div class="col-xs-8">
+                {{ form_widget(form.city) }}
+                <div class="errors errors-message">
+                    {{ form_errors(form.city) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2">
+                {{ form_widget(form.roadNumber) }}
+            </div>
+            <div class="col-xs-10">
+                {{ form_widget(form.address1) }}
+            </div>
+        </div>
+        <div>
+            {{ form_widget(form.address2) }}
+        </div>
+    </div>
+{% endblock %}
+
+
+
+{% block autocomplete_entity_widget %}
+    <div class="ui-widget autocomplete-entity" data-name="{{ id }}">
+        <input type="hidden" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}"{% endif %}
+               class="autocomplete-entity-id">
+        <div class="autocomplete-entity-label-container">
+            <div>
+                <input type="text" class="autocomplete-entity-label"
+                       {% if attr.placeholder | default %}placeholder="{{ attr.placeholder }}"{% endif %}
+                       data-class-name="{{ class_name }}" data-choice-label="{{ choice_label }}"
+                       data-search-fields="{{ search_fields|json_encode }}"
+                       data-order-by="{{ order_by|json_encode }}"
+                       data-with-autocomplete-focus="{{ with_autocomplete_focus }}"
+                >
+            </div>
+            <div class="add-container">
+                <span class="small-square-button autocomplete-create fa fa-plus"
+                      data-route="{{ create_route }}" data-title="{{ title }}"></span>
+            </div>
+        </div>
+
+        <div class="autocomplete-entity-selected-label-container {{ not value ? 'hidden' : '' }}">
+            <span class="autocomplete-entity-selected-label"
+                  data-route="{{ edit_route }}" data-title="{{ title }}">{{ choice_label_value }}</span>
+            <i class="small-square-button autocomplete-remove-selected fa fa-times"></i>
+        </div>
+    </div>
+{% endblock %}
+
+{% block custom_autocomplete_entity_widget %}
+    <div class="ui-widget custom-autocomplete-entity" data-name="{{ id }}">
+        <input type="hidden" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}"{% endif %} class="custom-autocomplete-entity-id">
+        <input type="text" class="custom-autocomplete-entity-label" data-path="{{ path }}" data-payload="{{ payload | json_encode | escape('html_attr') }}"
+               {% if attr.placeholder | default %}placeholder="{{ attr.placeholder }}"{% endif %} value="{{ entity_label }}"
+        >
+    </div>
+{% endblock %}
+
+
+{% block phone_with_code_widget %}
+    <div class="phone_with_code_container">
+        <div class="phone_with_code_container_code">
+            {{ form_widget(form.code) }}
+        </div>
+        <div class="phone_with_code_container_phone">
+            {{ form_widget(form.phone) }}
+        </div>
+    </div>
+    <div class="errors errors-message">
+        {{ form_errors(form.code) }}
+        {{ form_errors(form.phone) }}
+    </div>
+{% endblock %}
+
+{% block enhanced_file_widget %}
+    {% set uploaded_file_name = attribute(form.parent.vars.data, related_file_name_field) | default %}
+    {% set uploaded_file_label = related_file_name_label ? attribute(form.parent.vars.data, related_file_name_label) | default : uploaded_file_name %}
+    {% set fileExist = uploaded_file_name and not form.file_deleted.vars.data %}
+    <div class="enhanced-file">
+        <div class="enhanced-file-upload-container {{ uploaded_file_name ? '' }} {% if fileExist %}hidden{% endif %}">
+            <input type="text" class="enhanced-file-name-input" readonly>
+            <label for="{{ form.file.vars.id }}">Parcourir...</label>
+        </div>
+        {% if fileExist %}
+            <div class="enhanced-file-previous-container">
+                <a href="{{ path('utils_download_file', {directoryName: upload_directory_name, fileName: uploaded_file_name}) }}">{{ uploaded_file_label }}</a>
+                <i class="small-square-button enhanced-file-delete fa fa-times"></i>
+            </div>
+        {% endif %}
+
+        <div class="hidden">
+            {{ form_widget(form.file_deleted, {attr: {class: 'file-deleted'}}) }}
+            {{ form_row(form.file, {attr: {class: 'file'}}) }}
+        </div>
+
+        {{ form_errors(form) }}
+    </div>
+{% endblock %}
+
+
+{% block time_widget %}
+    {%- if widget == 'single_text' -%}
+        <div class="timepicker-container">
+            {{ block('form_widget_simple') }}
+        </div>
+    {%- else -%}
+        {{ parent() }}
+    {%- endif -%}
+{% endblock %}
+
+{# surchage de offer #}
+{% block offer_widget %}
+    <div class="form-row">
+        <div class="col-xs-2">
+            {{ form_label(form.label) }}
+        </div>
+        <div class="col-xs-6">
+            {{ form_widget(form.label) }}
+            <div class="errors errors-message">
+                {{ form_errors(form.label) }}
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-xs-2">
+            {{ form_label(form.code) }}
+        </div>
+        <div class="col-xs-6">
+            {{ form_widget(form.code) }}
+            <div class="errors errors-message">
+                {{ form_errors(form.code) }}
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-xs-2">
+            {{ form_label(form.description) }}
+        </div>
+        <div class="col-xs-10">
+            {{ form_widget(form.description) }}
+            <div class="errors errors-message">
+                {{ form_errors(form.description) }}
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-xs-2">
+            {{ form_label(form.prestations) }}
+        </div>
+        <div class="col-xs-10">
+            {{ form_widget(form.prestations) }}
+            <div class="errors errors-message">
+                {{ form_errors(form.prestations) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block phone_row %}
+    <div class="form-row">
+        <div class="label-container">
+            {{ form_label(form) }}
+        </div>
+        <div class="widget-container">
+            {{ form_widget(form) }}
+            <a class="cursor_pointer check-phone {% if form.vars.phoneType == 'fix' %}phone-fix{% else %}phone-mobile{% endif %}"><i class="small-square-button-phone fa fa-search"></i></a>
+            <div class="errors errors-message">
+                {{ form_errors(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

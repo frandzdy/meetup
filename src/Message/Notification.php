@@ -12,12 +12,12 @@ namespace App\Message;
 class Notification
 {
     private $message;
-    private $destinataires;
+    private $destinataire;
 
-    public function __construct(String $message = '', array $destinataires = [])
+    public function __construct(?String $message, ?String $destinataire)
     {
         $this->message = $message;
-        $this->destinataires = $destinataires;
+        $this->destinataire = $destinataire;
     }
 
     /**
@@ -30,8 +30,8 @@ class Notification
     /**
      * @return array
      */
-    public function getDestinataires(): array
+    public function getDestinataire(): String
     {
-        return $this->destinataires;
+        return $this->destinataire;
     }
 }

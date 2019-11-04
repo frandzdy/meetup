@@ -2,12 +2,17 @@
 
 
 {% block body %}
-    <br>
-    <a class="btn btn-primary" href="{{ path('event_new') }}">Créer un nouvelle évènement</a>
-    <a class="btn btn-primary" href="{{ path('event_index') }}">Liste des évènements</a>
-    <br>
-    <br>
-    <div id="calendar-holder"></div>
+    <div class="marginTop25px">
+        <button class="btn btn-primary add-multiple-modal pull-right" data-path="{{ path('event_index') }}"
+           data-width="400px" data-height="150px" data-top="30%" data-left="30%" data-title="Informations">
+            <i class="fa fa-plus"></i> Nouveau évènement
+        </button>
+        <button class="btn btn-primary add-multiple-modal pull-right" href="{{ path('event_index') }}">
+            <i class="fa fa-plus"></i> Evènements
+        </button>
+    </div>
+    <div class="clearfix"></div>
+    <div id="calendar"></div>
 {% endblock %}
 
 {% block javascripts %}
@@ -16,44 +21,5 @@
         var now = "{{ 'now'|date('Y-m-d H:i:s') }}";
         {#var defaultDate = "{{ defaultDate|date('Y-m-d H:i:s') }}";#}
     </script>
-    <script>require('assets/js/app/agenda.js');</script>
-{#    <script type="text/javascript">#}
-{#        document.addEventListener('DOMContentLoaded', () => {#}
-{#            var calendarEl = document.getElementById('calendar-holder');#}
-
-{#            var calendar = new FullCalendar.Calendar(calendarEl, {#}
-{#                defaultView: 'agendaWeek',#}
-{#                editable: true,#}
-{#                slotLabelFormat:"HH:mm",#}
-{#                slotDuration: '00:15:00',#}
-{#                minTime: "08:00:00",#}
-{#                maxTime: "18:30:00",#}
-{#                timeFormat: "H:mm",#}
-{#                allDaySlot: false,#}
-{#                selectable: true,#}
-{#                selectHelper: true,#}
-
-{#                eventSources: [#}
-{#                    {#}
-{#                        url: "{{ path('fc_load_events') }}",#}
-{#                        method: "POST",#}
-{#                        extraParams: {#}
-{#                            filters: JSON.stringify({})#}
-{#                        },#}
-{#                        failure: () => {#}
-{#                            // alert("There was an error while fetching FullCalendar!");#}
-{#                        },#}
-{#                    },#}
-{#                ],#}
-{#                header: {#}
-{#                    left: 'prev,next today',#}
-{#                    center: 'title',#}
-{#                    right: 'dayGridMonth,timeGridWeek,timeGridDay',#}
-{#                },#}
-{#                plugins: ['interaction', 'dayGrid', 'timeGrid'], // https://fullcalendar.io/docs/plugin-index#}
-{#                timeZone: 'UTC',#}
-{#            });#}
-{#            calendar.render();#}
-{#        });#}
-{#    </script>#}
+    <script>require('assets/js/app/02-agenda.js');</script>
 {% endblock %}

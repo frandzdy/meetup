@@ -2,7 +2,7 @@
 
 {{ form_start(form, { 'action': path('fos_user_resetting_reset', {'token': token}), 'attr': { 'class': 'form-signin fos_user_resetting_reset' } }) }}
         {{ form_row(form.plainPassword) }}
-    <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" value="">
+    <button class="btn btn-sm btn-primary btn-block text-uppercase" type="submit" value="">
         {{ 'resetting.reset.submit'|trans }}
     </button>
 {{ form_end(form) }}

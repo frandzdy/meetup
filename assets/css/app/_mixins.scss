@@ -1,0 +1,37 @@
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -o-border-radius: $radius;
+  border-radius: $radius;
+}
+
+@mixin filter($filter) {
+  -webkit-filter: $filter;
+  -moz-filter: $filter;
+  -ms-filter: $filter;
+  -o-filter: $filter;
+  filter: $filter;
+}
+
+@mixin clearAfter() {
+  &:after {
+    content: ".";
+    font-size: 0;
+    clear: both;
+  }
+}
+
+@mixin animOpenCloseAsideBar() {
+  /* animation */
+  transition-property: all;
+  transition-duration: .3s;
+  transition-timing-function: ease-out;
+}
+
+
+@mixin animOpenCloseZoneFilter() {
+  /* animation */
+  transition-property: all;
+  transition-duration: .3s;
+  transition-timing-function: ease-out;
+}

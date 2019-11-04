@@ -1,0 +1,32 @@
+#select-user {
+  width: 150px;
+}
+
+.fc-event,
+.fc-event:hover,
+.ui-widget .fc-event {
+  color: #3a87ad; /* default TEXT color */
+  text-decoration: none; /* if <a> has an href */
+  cursor: pointer;
+}
+
+#task-alert-help {
+  margin: 10px;
+  font-style: italic;
+}
+
+.multipleModal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 25%;
+  width: 800px;
+  height: auto !important;
+  z-index: 100000;
+  padding-right: 0 !important;
+}
+
+.modal-header .close {
+  margin-top: 15px !important;
+}
+

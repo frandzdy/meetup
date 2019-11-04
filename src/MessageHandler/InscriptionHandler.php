@@ -10,19 +10,36 @@ namespace App\MessageHandler;
 
 
 use App\Message\Inscription;
+use App\Message\Notification;
+use App\Service\MailerService;
 
 class InscriptionHandler
 {
+    /**
+     * @var \Swift_Mailer
+     */
     private $mailer;
+    /**
+     * @var \Twig\Template
+     */
+    private $template;
+    /**
+     * @var MailerService
+     */
+    private $mailerService;
 
-    public function __construct(\Swift_Mailer $mailer)
+    public function __construct(\Swift_Mailer $mailer, $template, \Twig\Environment $twig, MailerService $mailerService)
     {
         $this->mailer = $mailer;
+        $this->twig = $twig;
+        $this->mailerService = $mailerService;
     }
 
-    public function __invoke(Inscription $inscription)
+    public function __invoke(Notification $notification)
     {
-        $inscription->getPerson()->getNom();
-         dump(sprintf('Cette personne s\'est inscrit'));
+        $destinataire = $notification->getDestinataire();
+        $context = ['message' => $notification->getMessage(), 'subject' => 'inscription :)'];
+        $res = $this->mailerService->sendEmail($destinataire,'emails/inscription.html.twig', $context);
+        dump(sprintf('Envoi de notification à [%s], envoyé : %d', $destinataire, $res));
     }
 }

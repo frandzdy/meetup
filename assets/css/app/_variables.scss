@@ -1,0 +1,46 @@
+/* COLORS */
+
+$color-primary-meduim: #95b338;
+$color-primary-light: #cccc66;
+$color-primary-light-2: #e8f2c8;
+$color-secondar-dark: #245f87;
+
+/* #34495e */
+
+$color-text-dark: #34495e;
+$color-border-dark: $color-text-dark;
+$gray-light-0: #f2f2f2;
+$gray-light-1: #ebebeb;
+$gray-light-2: #e4e5e7;
+$gray-light-3: #e5e6e7;
+$gray-meduim-0: #c2c2c2;
+$gray-meduim: #999999;
+$orange-1: #ffa800;
+$blue-1: #2091de;
+$green-1: #48ab55;
+$maron-1: #993333;
+$red-1: #a90d25;
+$border-color-1: $gray-light-1;
+
+/* form, input */
+
+$border-color-2: $gray-light-2;
+
+/* POLICE FAMILY */
+
+$police-general: "OpenSans-Regular";
+$police-title: "OpenSans-Light";
+$police-title-2: "OpenSans-Semibold";
+
+/* size main cols  */
+
+
+/* cas 1 : when asidbar was open */
+
+$width-left-aside: 236px;
+$width-right-content: calc(100% - 236px);
+
+/* cas 2 : when asidbar was closed */
+
+$width-left-aside-2: 28px;
+$width-right-content-2: calc(100% - 28px);

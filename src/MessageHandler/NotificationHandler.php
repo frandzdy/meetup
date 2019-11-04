@@ -10,37 +10,35 @@ namespace App\MessageHandler;
 
 
 use App\Message\Notification;
+use App\Service\MailerService;
 
 class NotificationHandler
 {
+    /**
+     * @var \Swift_Mailer
+     */
     private $mailer;
+    /**
+     * @var \Twig\Template
+     */
+    private $template;
+    /**
+     * @var MailerService
+     */
+    private $mailerService;
 
-    public function __construct(\Swift_Mailer $mailer)
+    public function __construct(\Swift_Mailer $mailer, $template, \Twig\Environment $twig, MailerService $mailerService)
     {
         $this->mailer = $mailer;
+        $this->twig = $twig;
+        $this->mailerService = $mailerService;
     }
 
     public function __invoke(Notification $notification)
     {
-        foreach ($notification->getDestinataires() as $destinataire) {
-            $message = (new \Swift_Message('Hello Email'))
-                ->setFrom('send@example.com')
-                ->setTo($destinataire)
-                ->setBody(
-                    sprintf('Notification :<h1>%s</h1>', $notification->getMessage()),
-                    'text/html'
-                )
-                // If you also want to include a plaintext version of the message
-                ->addPart(
-                   sprintf('Notification : %s', $notification->getMessage()),
-                    'text/plain'
-                )
-            ;
-
-            $this->mailer->send($message);
-            dump(sprintf('Envoi de notification à [%s], envoyé ? : %d', $notification->getMessage(), $this->mailer->send($message)));
-        }
-
-
+        $destinataire = $notification->getDestinataire();
+        $context = ['message' => $notification->getMessage(), 'subject' => 'Notification Event '];
+        $res = $this->mailerService->sendEmail($destinataire,'emails/notification.html.twig', $context);
+        dump(sprintf('Envoi de notification à [%s], envoyé : %d', $destinataire, $res));
     }
 }

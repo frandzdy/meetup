@@ -5,43 +5,329 @@
 
 {% set current_locale = app.request.locale %}
 
-<nav class="navbar navbar-fixed-top navbar-expand-lg navbar-expand-sm navbar-light bg-light">
-    <div class="container">
-        <a class="navbar-brand" href="{{ path('home') }}">Meet-up</a>
-        <div class="navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item dropdown">
-                    {% if app.user is not null %}
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {% if app.user.image is not null %}
-                                <img src="{{ asset(app.user.image.PathView) }}" alt="{{ app.user.image.alt }}" style="width:40px">
-                            {% endif %}
-                            {{ app.user.username }}
-                        </a>
-                        <!-- Here's the magic. Add the .animate and .slide-in classes to your .dropdown-menu and you're all set! -->
-                        <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ path('front_edit_person', {id: app.user.id}) }}">Mon compte</a>
-                            <a class="dropdown-item" href="{{ path('event_new') }}">Nouvelle évènements</a>
-                            <a class="dropdown-item" href="{{ path('event_index') }}">Liste des évènements</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item"href="{{ path('fos_user_security_logout') }}">Déconnexion</a>
-                        </div>
-                    {% else %}
-                        <!-- Here's the magic. Add the .animate and .slide-in classes to your .dropdown-menu and you're all set! -->
-                            <a class="btn btn-primary" href="{{ path('fos_user_security_login') }}">Se connecter</a>
-                    {% endif %}
+{#<nav class="navbar navbar-fixed-top navbar-expand-lg navbar-expand-sm navbar-light bg-light">#}
+{#    <div class="container">#}
+{#        <a class="navbar-brand" href="{{ path('home') }}">Meet-up</a>#}
+{#        <div class="navbar-collapse" id="navbarSupportedContent">#}
+{#            <ul class="navbar-nav ml-auto">#}
+{#                <li class="nav-item dropdown">#}
+{#                    {% if app.user is not null %}#}
+{#                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
+{#                            {% if app.user.image is not null %}#}
+{#                                <img src="{{ asset(app.user.image.PathView) }}" alt="{{ app.user.image.alt }}" style="width:40px">#}
+{#                            {% endif %}#}
+{#                            {{ app.user.username }}#}
+{#                        </a>#}
+{#                        <!-- Here's the magic. Add the .animate and .slide-in classes to your .dropdown-menu and you're all set! -->#}
+{#                        <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="navbarDropdown">#}
+{#                            <a class="dropdown-item" href="{{ path('front_edit_person', {id: app.user.id}) }}">Mon compte</a>#}
+{#                            <a class="dropdown-item" href="{{ path('event_new') }}">Nouvelle évènements</a>#}
+{#                            <a class="dropdown-item" href="{{ path('event_index') }}">Liste des évènements</a>#}
+{#                                <div class="dropdown-divider"></div>#}
+{#                                <a class="dropdown-item"href="{{ path('fos_user_security_logout') }}">Déconnexion</a>#}
+{#                        </div>#}
+{#                    {% else %}#}
+{#                        <!-- Here's the magic. Add the .animate and .slide-in classes to your .dropdown-menu and you're all set! -->#}
+{#                            <a class="btn btn-primary" href="{{ path('fos_user_security_login') }}">Se connecter</a>#}
+{#                    {% endif %}#}
 
-                </li>
-            </ul>
-        </div>
-        <select id="locale" class="col-1 custom-select">
-            {%- for locale, name in locales -%}
-                <option value="{{ locale }}" {{ locale == current_locale ? 'selected' }}
-                        data-target="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params') | merge(app.request.query.all) | merge({_locale: locale})) }}"
-                >
-                    {{- name|slice(0, 2)|upper -}}
-                </option>
-            {%- endfor -%}
-        </select>
-    </div>
+{#                </li>#}
+{#            </ul>#}
+{#        </div>#}
+{#        <select id="locale" class="col-1 custom-select">#}
+{#            {%- for locale, name in locales -%}#}
+{#                <option value="{{ locale }}" {{ locale == current_locale ? 'selected' }}#}
+{#                        data-target="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params') | merge(app.request.query.all) | merge({_locale: locale})) }}"#}
+{#                >#}
+{#                    {{- name|slice(0, 2)|upper -}}#}
+{#                </option>#}
+{#            {%- endfor -%}#}
+{#        </select>#}
+{#    </div>#}
+{#</nav>#}
+
+{#<nav class="navbar navbar-expand-md navbar-dark bg-dark navbar-laravel" style="margin-bottom: 20px;">#}
+{#    <div class="container">#}
+{#        <a class="navbar-brand" href="{{ path('home') }}">Meet-up</a>#}
+{#        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"#}
+{#                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">#}
+{#            <span class="navbar-toggler-icon"></span>#}
+{#        </button>#}
+{#        <div class="collapse navbar-collapse" id="navbarSupportedContent">#}
+{#            {% if app.user is not null %}#}
+{#                <!-- Left Side Of Navbar -->#}
+{#                <ul class="navbar-nav mr-auto">#}
+{#                    <li class="nav-item">#}
+{#                        <span class="badge badge-pill badge-primary" id="badgeNotif"#}
+{#                              style="float:right;margin-bottom:-10px;">0</span>#}
+{#                        <a class="nav-link" href="{{ path('front_chat') }}">Message#}
+{#                            {% if app.request.attributes.get('_route') is same as('front_chat') %}#}
+{#                                <span class="sr-only">(current)</span>#}
+{#                            {% endif %}#}
+{#                        </a>#}
+{#                    </li>#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" href="{{ path('event_calendar') }}">Mon agenda#}
+{#                            {% if app.request.attributes.get('_route') is same as('event_calendar') %}#}
+{#                                <span class="sr-only">(current)</span>#}
+{#                            {% endif %}#}
+{#                        </a>#}
+{#                    </li>#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" href="{{ path('event_index') }}">Evènements#}
+{#                            {% if app.request.attributes.get('_route')is same as('event_index') %}#}
+{#                                <span class="sr-only">(current)</span>#}
+{#                            {% endif %}#}
+{#                        </a>#}
+{#                    </li>#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" href="{{ path('home') }}">Mur#}
+{#                            {% if app.request.attributes.get('_route')is same as('home') %}#}
+{#                                <span class="sr-only">(current)</span>#}
+{#                            {% endif %}#}
+{#                        </a>#}
+{#                    </li>#}
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" href="{{ path('sm_front_contact') }}">Bros & Sistas#}
+{#                            {% if app.request.attributes.get('_route')is same as('sm_front_contact') %}#}
+{#                                <span class="sr-only">(current)</span>#}
+{#                            {% endif %}#}
+{#                        </a>#}
+{#                    </li>#}
+{#                    #}{#                <li class="nav-item">#}
+{#                    #}{#                    <a class="nav-link" href="#">Photos <span class="sr-only">(current)</span></a>#}
+{#                    #}{#                </li>#}
+{#                </ul>#}
+{#            {% endif %}#}
+{#            {% if app.user is null %}#}
+{#                <!-- Right Side Of Navbar -->#}
+{#                <ul class="navbar-nav ml-auto">#}
+{#                    <li><a class="btn btn-primary" href="{{ path('fos_user_security_login') }}">Se connecter</a></li>#}
+{#                    <li><a class="btn btn-primary" href="{{ path('front_create_person') }}">S'inscrire</a></li>#}
+{#                </ul>#}
+{#            {% else %}#}
+{#                <ul class="navbar-nav ml-auto">#}
+{#                    <li><a class="btn btn-primary" href="{{ path('front_edit_person', {id: app.user.id}) }}">Mon#}
+{#                            compte</a></li>#}
+{#                    <li><a class="btn btn-primary" href="{{ path('fos_user_security_logout') }}">Se déconnecter</a></li>#}
+{#                </ul>#}
+{#            {% endif %}#}
+{#        </div>#}
+{#    </div>#}
+{#</nav>#}
+
+<nav class="navbar fixed-top navbar-expand navbar-light bg-gradient-light topbar mb-4 static-top shadow">
+    <!-- Sidebar Toggle (Topbar) -->
+    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+        <i class="fa fa-bars"></i>
+    </button>
+    <a class="navbar-brand" href="{{ path('home') }}">Meet-up</a>
+    <!-- Topbar Search -->
+{#    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">#}
+{#        <div class="input-group">#}
+{#            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."#}
+{#                   aria-label="Search" aria-describedby="basic-addon2">#}
+{#            <div class="input-group-append">#}
+{#                <button class="btn btn-primary" type="button">#}
+{#                    <i class="fas fa-search fa-sm"></i>#}
+{#                </button>#}
+{#            </div>#}
+{#        </div>#}
+{#    </form>#}
+
+    <!-- Topbar Navbar -->
+    <ul class="navbar-nav ml-auto">
+
+{#        <!-- Nav Item - Search Dropdown (Visible Only XS) -->#}
+{#        <li class="nav-item dropdown no-arrow d-sm-none">#}
+{#            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown"#}
+{#               aria-haspopup="true" aria-expanded="false">#}
+{#                <i class="fas fa-search fa-fw"></i>#}
+{#            </a>#}
+{#            <!-- Dropdown - Messages -->#}
+{#            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"#}
+{#                 aria-labelledby="searchDropdown">#}
+{#                <form class="form-inline mr-auto w-100 navbar-search">#}
+{#                    <div class="input-group">#}
+{#                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."#}
+{#                               aria-label="Search" aria-describedby="basic-addon2">#}
+{#                        <div class="input-group-append">#}
+{#                            <button class="btn btn-primary" type="button">#}
+{#                                <i class="fas fa-search fa-sm"></i>#}
+{#                            </button>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </form>#}
+{#            </div>#}
+{#        </li>#}
+
+        <!-- Nav Item - Alerts -->
+        <li class="nav-item dropdown no-arrow mx-1">
+            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-bell fa-fw"></i>
+                <!-- Counter - Alerts -->
+                <span class="badge badge-danger badge-counter">3+</span>
+            </a>
+            <!-- Dropdown - Alerts -->
+            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                 aria-labelledby="alertsDropdown">
+                <h6 class="dropdown-header">
+                    Alertes
+                </h6>
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                    <div class="mr-3">
+                        <div class="icon-circle bg-primary">
+                            <i class="fas fa-file-alt text-white"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="small text-gray-500">December 12, 2019</div>
+                        <span class="font-weight-bold">A new monthly report is ready to download!</span>
+                    </div>
+                </a>
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                    <div class="mr-3">
+                        <div class="icon-circle bg-success">
+                            <i class="fas fa-donate text-white"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="small text-gray-500">December 7, 2019</div>
+                        $290.29 has been deposited into your account!
+                    </div>
+                </a>
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                    <div class="mr-3">
+                        <div class="icon-circle bg-warning">
+                            <i class="fas fa-exclamation-triangle text-white"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="small text-gray-500">December 2, 2019</div>
+                        Spending Alert: We've noticed unusually high spending for your account.
+                    </div>
+                </a>
+                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+            </div>
+        </li>
+
+        <!-- Nav Item - Messages -->
+        <li class="nav-item dropdown no-arrow mx-1">
+            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-envelope fa-fw"></i>
+                <!-- Counter - Messages -->
+                <span class="badge badge-danger badge-counter">7</span>
+            </a>
+            <!-- Dropdown - Messages -->
+            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                 aria-labelledby="messagesDropdown">
+                <h6 class="dropdown-header">
+                    Message Center
+                </h6>
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                    <div class="dropdown-list-image mr-3">
+                        <img class="rounded-circle" src="https://source.unsplash.com/fn_BT9fwg_E/60x60" alt="">
+                        <div class="status-indicator bg-success"></div>
+                    </div>
+                    <div class="font-weight-bold">
+                        <div class="text-truncate">Hi there! I am wondering if you can help me with a problem I've been
+                            having.
+                        </div>
+                        <div class="small text-gray-500">Emily Fowler · 58m</div>
+                    </div>
+                </a>
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                    <div class="dropdown-list-image mr-3">
+                        <img class="rounded-circle" src="https://source.unsplash.com/AU4VPcFN4LE/60x60" alt="">
+                        <div class="status-indicator"></div>
+                    </div>
+                    <div>
+                        <div class="text-truncate">I have the photos that you ordered last month, how would you like
+                            them sent to you?
+                        </div>
+                        <div class="small text-gray-500">Jae Chun · 1d</div>
+                    </div>
+                </a>
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                    <div class="dropdown-list-image mr-3">
+                        <img class="rounded-circle" src="https://source.unsplash.com/CS2uCrpNzJY/60x60" alt="">
+                        <div class="status-indicator bg-warning"></div>
+                    </div>
+                    <div>
+                        <div class="text-truncate">Last month's report looks great, I am very happy with the progress so
+                            far, keep up the good work!
+                        </div>
+                        <div class="small text-gray-500">Morgan Alvarez · 2d</div>
+                    </div>
+                </a>
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                    <div class="dropdown-list-image mr-3">
+                        <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60" alt="">
+                        <div class="status-indicator bg-success"></div>
+                    </div>
+                    <div>
+                        <div class="text-truncate">Am I a good boy? The reason I ask is because someone told me that
+                            people say this to all dogs, even if they aren't good...
+                        </div>
+                        <div class="small text-gray-500">Chicken the Dog · 2w</div>
+                    </div>
+                </a>
+                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
+            </div>
+        </li>
+
+        <div class="topbar-divider d-none d-sm-block"></div>
+
+        {#                <!-- Right Side Of Navbar -->#}
+        {#                <ul class="navbar-nav ml-auto">#}
+        {#                    <li><a class="btn btn-primary" href="{{ path('fos_user_security_login') }}">Se connecter</a></li>#}
+        {#                    <li><a class="btn btn-primary" href="{{ path('front_create_person') }}">S'inscrire</a></li>#}
+        {#                </ul>#}
+        {#            {% else %}#}
+        {#                <ul class="navbar-nav ml-auto">#}
+        {#                    <li><a class="btn btn-primary" href="{{ path('front_edit_person', {id: app.user.id}) }}">Mon#}
+        {#                            compte</a></li>#}
+        {#                    <li><a class="btn btn-primary" href="">Se déconnecter</a></li>#}
+        {#                </ul>#}
+        {#            {% endif %}#}
+        <!-- Nav Item - User Information -->
+        <li class="nav-item dropdown no-arrow">
+
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ app.user.username }}</span>
+                <img class="img-profile rounded-circle" src="{{ asset(uploads_directory ~ app.user.avatar) }}">
+            </a>
+            <!-- Dropdown - User Information -->
+            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <a class="dropdown-item" href="{{ path('front_edit_person', {id: app.user.id}) }}">
+                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Mon compte
+                </a>
+                <a class="dropdown-item" href="#">
+                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Mes préférences
+                </a>
+                <a class="dropdown-item" href="#">
+                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Mes Events
+                </a>
+                <a class="dropdown-item" href="{{ path('event_calendar') }}">
+                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Agenda
+                </a>
+                <a class="dropdown-item" href="{{ path('sm_front_contact') }}">
+                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Mes Bros & Sistas
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{{ path('fos_user_security_logout') }}">
+                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Déconnexion
+                </a>
+            </div>
+        </li>
+    </ul>
 </nav>

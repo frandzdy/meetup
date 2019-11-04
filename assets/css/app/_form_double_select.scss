@@ -1,0 +1,29 @@
+.double-select {
+  display: table;
+  width: 100%;
+
+  &>* {
+    display: table-cell;
+    width: 49%;
+
+    &.double-select-buttons-container {
+      width: 2%;
+      vertical-align: middle;
+      padding: 5px 15px;
+
+      .fa {
+        font-size: 32px;
+        display: block;
+        cursor: pointer;
+
+        &:first-child {
+          margin-bottom: 10px;
+        }
+      }
+    }
+  }
+
+  .double-select-hidden {
+    display: none;
+  }
+}

@@ -1,76 +1,83 @@
-{% form_theme form 'form/_form_layout.html.twig' %}
-{# Déclaration de variable #}
-{% set tailleChamp = 7 %}
 {% trans_default_domain 'message' %}
 
-<div class="row">
-    <div class="col-lg-10 col-xl-9 mx-auto">
-        <div class="card card-signin flex-row my-5">
-            <div class="card-img-left d-none d-md-flex">
-                {% if user.id is not null %}
-                    {% if user.image.url is defined %}
-                        <div class="col-sm-5 pull-right">
-                            <a class="" href="{{ asset(user.image.pathView) }}" title="{{ user.image.alt }}">
-                                <img src="{{ asset(user.image.PathView) }}" alt="{{ user.image.alt }}"
-                                     style="width:100px">
-                            </a>
-                        </div>
-                    {% else %}
-                        {% set fileSexe = '' %}
-                        {% if user.civilite %}
-                            {% if user.civilite.civilite == 'Monsieur' %}
-                                {% set fileSexe = 'homme' %}
-                            {% elseif user.civilite.civilite == 'Madame' or user.civilite == 'Mademoiselle' %}
-                                {% set fileSexe = 'femme' %}
-                            {% else %}
-                                {% set fileSexe = 'deux' %}
-                            {% endif %}
-                        {% endif %}
-
-                        {% set pathToBundle = 'bundles/ocplatform/img/avatar-' ~ fileSexe ~ '.jpg' %}
-                        <div class="col-sm-5 pull-right">
-                            <a class="" href="{{ asset(pathToBundle) }}" title="avatar-{{ fileSexe }}">
-                                <img src="{{ asset(pathToBundle) }}" alt="avatar-{{ fileSexe }}" style="width:100px">
-                            </a>
-                        </div>
-                    {% endif %}
+{% if user.id is not null %}
+    <h5>{{ "lg.person.edit"|trans }}</h5>
+{% else %}
+    <h5>{{ "lg.person.create"|trans }}</h5>
+{% endif %}
+<div>
+    <div class="row">
+        <div class="col-lg-5 col-sm-2 d-none d-sm-block d-sm-none d-md-block">
+            {% if user is not null %}
+                {% if user.avatar is not null %}
+                    <div class="col-sm-12">
+                        <a class="" href="{{ asset(uploads_directory ~ user.avatar) }}" title="{{ user.avatar }}">
+                            <img src="{{ asset(uploads_directory ~ user.avatar) }}" alt="{{ user.avatar }}"
+                                 style="width:100px" class="right avatar responsive">
+                        </a>
+                    </div>
                 {% endif %}
+            {% endif %}
+        </div>
+        <div class="col-lg-6 col-sm-12">
+            {{ form_start(form, {attr: {'id':'sm_edit_user'}}) }}
+            {# Les erreurs générales du formulaire. #}
+            <div class="form-label-group">
+                {{ form_label(form.civilite) }}{{ form_widget(form.civilite) }}
             </div>
-            <div class="card-body">
-                {% if user.id is not null %}
-                    <h5>{{ "lg.person.edit"|trans }}</h5>
-                {% else %}
-                    <h5>{{ "lg.person.create"|trans }}</h5>
-                {% endif %}
-                {{ form_start(form, {'attr': {'class': 'form-signin'}}) }}
-                {# Les erreurs générales du formulaire. #}
-                {{ form_errors(form) }}
-                {{ form_row(form.civilite) }}
-                {{ form_row(form.username) }}
-                {{ form_row(form.firstname) }}
-                {{ form_row(form.lastname) }}
-                {{ form_row(form.adresse) }}
-                {{ form_row(form.codePostal) }}
-                {{ form_row(form.ville) }}
-                {{ form_row(form.dateNaissance) }}
-                {{ form_row(form.email) }}
-                {{ form_row(form.password.first) }}
-                {{ form_row(form.password.second) }}
-                {{ form_row(form.image.file) }}
-                <a class="btn btn-danger" href="{{ path('home') }}" class="btn btn-default">
-                    <i class="glyphicon glyphicon-chevron-left"></i>
-                    Retour à l'accueil
-                </a>
-                {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
-                {# Génération automatique des champs pas encore écrits.
-                   Dans cet exemple, ce serait le champ CSRF (géré automatiquement par Symfony !)
-                   et tous les champs cachés (type « hidden »). #}
-                {{ form_rest(form) }}
-
-                {# Fermeture de la balise <form> du formulaire HTML #}
-                {{ form_end(form) }}
+            <div class="form-label-group">
+                {{ form_label(form.username) }}{{ form_widget(form.username) }}
             </div>
+            <div class="form-label-group">
+                {{ form_label(form.firstname) }}{{ form_widget(form.firstname) }}
+            </div>
+            <div class="form-label-group">
+                {{ form_label(form.lastname) }}{{ form_widget(form.lastname) }}
+            </div>
+            <div class="form-label-group">
+                {{ form_label(form.adresse) }}{{ form_widget(form.adresse) }}
+            </div>
+            <div class="form-label-group">
+                {{ form_label(form.codePostal) }}{{ form_widget(form.codePostal) }}
+            </div>
+            <div class="form-label-group">
+                {{ form_label(form.ville) }}{{ form_widget(form.ville) }}
+            </div>
+            <div class="form-label-group">
+                {{ form_label(form.dateNaissance) }}{{ form_widget(form.dateNaissance) }}
+            </div>
+            <div class="form-label-group">
+                {{ form_label(form.email) }}{{ form_widget(form.email) }}
+            </div>
+            <div class="form-label-group">
+                {{ form_label(form.password.first) }}{{ form_widget(form.password.first) }}
+            </div>
+            <div class="form-label-group">
+                {{ form_label(form.password.second) }}{{ form_widget(form.password.second) }}
+            </div>
+            <div class="form-label-group">
+                {{ form_label(form.avatar) }}{{ form_widget(form.avatar) }}
+            </div>
+            <div class="clearfix"></div>
+            <a class="btn btn-danger" href="{{ path('home') }}" class="btn btn-default">
+                <i class="glyphicon glyphicon-chevron-left"></i>
+                Retour à l'accueil
+            </a>
+            {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+            <div class="g-recaptcha"
+                 data-sitekey="{{ google_key }}"
+                 data-callback="onSubmit"
+                 data-size="invisible">
+            </div>
+            {# Génération automatique des champs pas encore écrits.
+               Dans cet exemple, ce serait le champ CSRF (géré automatiquement par Symfony !)
+               et tous les champs cachés (type « hidden »). #}
+            {{ form_rest(form) }}
+            {# Fermeture de la balise <form> du formulaire HTML #}
+            {{ form_end(form) }}
         </div>
     </div>
 </div>
+
+
 

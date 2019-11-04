@@ -1,0 +1,85 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+    <div class="count">
+        {{ contacts.getTotalItemCount }}
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <a href="#custom-modal" class="btn btn-custom waves-effect waves-light mb-4"
+               data-animation="fadein" data-plugin="custommodal" data-overlayspeed="200"
+               data-overlaycolor="#36404a"><i class="mdi mdi-plus"></i> Add Member</a></div>
+        <!-- end col -->
+    </div>
+    <!-- end row -->
+    <div class="row">
+        {% for contact in contacts if contact is not null %}
+            <div class="col-lg-4">
+                <div class="text-center card-box">
+                    <div class="member-card pt-2 pb-2">
+                        <div class="thumb-lg member-thumb mx-auto"><img
+                                    src="{{ asset(uploads_directory ~ contact.avatar)}}"
+                                    class="rounded-circle img-thumbnail" alt="profile-image"></div>
+                        <div class="">
+                            <h4>{{ contact.firstname ~ '' ~ contact.lastname }}</h4>
+                            <p class="text-muted">@Manager <span>| </span><span><a href="#" class="text-pink">websitename.com</a></span>
+                            </p>
+                        </div>
+                        <ul class="social-links list-inline">
+                            <li class="list-inline-item"><a title="" data-placement="top" data-toggle="tooltip"
+                                                            class="tooltips" href="" data-original-title="Facebook"><i
+                                            class="fa fa-facebook"></i></a></li>
+                            <li class="list-inline-item"><a title="" data-placement="top" data-toggle="tooltip"
+                                                            class="tooltips" href="" data-original-title="Twitter"><i
+                                            class="fa fa-twitter"></i></a></li>
+                            <li class="list-inline-item"><a title="" data-placement="top" data-toggle="tooltip"
+                                                            class="tooltips" href="" data-original-title="Skype"><i
+                                            class="fa fa-skype"></i></a></li>
+                        </ul>
+                        <button type="button" class="btn btn-primary mt-3 btn-rounded waves-effect w-md waves-light">
+                            Message Now
+                        </button>
+                        <div class="mt-4">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="mt-3">
+                                        <h4>7421</h4>
+                                        <p class="mb-0 text-muted">Wallets Balance</p>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="mt-3">
+                                        <h4>14754</h4>
+                                        <p class="mb-0 text-muted">Income amounts</p>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="mt-3">
+                                        <h4>11525</h4>
+                                        <p class="mb-0 text-muted">Total Transactions</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end col -->
+        {% endfor %}
+    </div>
+    <!-- end row -->
+    <div class="row">
+        <div class="col-12">
+            {# display navigation #}
+            <div class="navigation">
+                {{ knp_pagination_render(contacts) }}
+            </div>
+        </div>
+    </div>
+    <!-- end row -->
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>require('assets/js/app/06-contact.js');</script>
+{% endblock %}

@@ -24,7 +24,7 @@
                 <td>{{ event.endDate|date('d/m/Y') }}</td>
                 <td>
                     <a class="btn btn-secondary" href="{{ path('event_show', {'id': event.id}) }}">Voir</a>
-                    <a class="btn btn-secondary" href="{{ path('event_edit', {'id': event.id, 'fromCalendar' : 0}) }}">Modifier</a>
+                    <a class="btn btn-secondary" href="{{ path('event_edit', {'id': event.id}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}

@@ -1,13 +1,40 @@
-{{ form_start(form) }}
-<div class="form-label-group">
-    {{ form_widget(form.title) }}{{ form_label(form.title) }}{{ form_errors(form.title) }}
+<div class="col-lg-6">
+    <div class="card col-lg-12" >
+        <div id="map" class="card-img-top"></div>
+        <div class="card-body">
+            <h5 class="card-title" id="eventName">{{ event.eventsPlace.eventInstallation.name|default('') }}</h5>
+            <p class="card-text" id="eventAdresse">{{ event.eventsPlace.eventInstallation.address|default('') }}</p>
+            <p class="card-text" id="eventCodePostal">{{ event.eventsPlace.eventInstallation.codePostal|default('') }}</p>
+            <p class="card-text" id="eventVille">{{ event.eventsPlace.eventInstallation.ville|default('') }}</p>
+            <p class="card-text"></p>
+            <p class="card-text"></p>
+            <p class="card-text"></p>
+{#            <a href="#" class="btn btn-primary">Go somewhere</a>#}
+        </div>
+    </div>
 </div>
-<div class="form-label-group">
-    {{ form_widget(form.startDate) }}{{ form_label(form.startDate) }} {{ form_errors(form.startDate) }}
+<div class="col-lg-6">
+    {{ form_start(form) }}
+    <div class="form-label-group">
+        {{ form_row(form.title) }}
+    </div>
+    <div class="form-label-group">
+{#{{ form_label(form.startDate) }}{{ form_widget(form.startDate) }}#}
+        {{ form_row(form.startDate) }}
+    </div>
+    <div class="form-label-group">
+        {{ form_label(form.endDate) }}{{ form_widget(form.endDate) }}
+    </div>
+    <div class="form-label-group">
+        {{ form_label(form.nbParticipants) }}{{ form_widget(form.nbParticipants) }}
+    </div>
+    <div class="form-label-group">
+        {{ form_label(form.place) }}{{ form_widget(form.place) }}
+    </div>
+    <div class="form-label-group">
+        {{ form_label(form.eventsPlace) }}{{ form_widget(form.eventsPlace) }}
+    </div>
+    <a class="btn btn-danger" href="{{ path('event_index') }}">Annuler</a>
+    <button class="btn btn-primary">{{ button_label|default('Sauvegarder') }}</button>
+    {{ form_end(form) }}
 </div>
-<div class="form-label-group">
-    {{ form_widget(form.endDate) }}{{ form_label(form.endDate) }}{{ form_errors(form.endDate) }}
-</div>
-<a class="btn btn-danger" href="{{ path('event_index') }}">Annuler</a>
-<button class="btn btn-primary">{{ button_label|default('Sauvegarder') }}</button>
-{{ form_end(form) }}

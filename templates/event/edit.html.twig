@@ -4,5 +4,14 @@
 
 {% block body %}
     <h1>Edit Event</h1>
-    {{ include('event/_form.html.twig', {'button_label': 'Update'}) }}
+    <div class="row">
+        {{ include('event/_form.html.twig', {'button_label': 'Update'}) }}
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>var eventX = '{{ event.eventsPlace.gpsX|default('0') }}';</script>
+    <script>var eventY = '{{ event.eventsPlace.gpsY|default('0') }}';</script>
+    <script>var eventPlaceId = '{{ event.eventsPlace.id|default('0') }}';</script>
+    <script>require('assets/js/app/08-event.js');</script>
 {% endblock %}

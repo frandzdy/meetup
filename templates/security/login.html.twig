@@ -1,5 +1,4 @@
 {% extends 'layout.html.twig' %}
-{% trans_default_domain 'message' %}
 
 {% block title %}
     Login - {{ parent() }}
@@ -7,7 +6,7 @@
 
 {% block body %}
     <div class="row">
-        <div class="col-lg-10 col-xl-9 mx-auto">
+        <div class="col-lg-5 col-xl-5 mx-auto">
             <div class="card card-signin flex-row my-5">
                 <div class="card-img-left d-none d-md-flex">
                     <!-- Background image for card set in CSS! -->
@@ -21,13 +20,15 @@
 
                         <div class="form-group">
                             <label for="inputUsername">Nom d'utilisateur</label>
-                            <input type="text" value="{{ last_username }}" placeholder="Nom d'utilisateur" name="username" id="inputUsername"
+                            <input type="text" value="{{ last_username }}" placeholder="Nom d'utilisateur"
+                                   name="username" id="inputUsername"
                                    class="form-control" required
                                    autofocus>
                         </div>
                         <div class="form-group">
                             <label for="inputPassword">Mot de passe</label>
-                            <input type="password" name="password" placeholder="Mot de passe" id="inputPassword" class="form-control" required>
+                            <input type="password" name="password" placeholder="Mot de passe" id="inputPassword"
+                                   class="form-control" required>
                         </div>
                         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                         <div class="form-group">
@@ -37,21 +38,71 @@
                                 </label>
                             </div>
                         </div>
-                        <a class="d-block text-center mt-2 small" href="{{ path('front_create_person') }}">Pas encore de compte ?</a>
-                        <a class="d-block text-center mt-2 small" href="{{ path('fos_user_resetting_request') }}">Mot de passe oublié ?</a>
-                        <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">
+                        <a class="d-block text-center mt-2 small" href="{{ path('front_create_person') }}">Pas encore de
+                            compte ?</a>
+                        <a class="d-block text-center mt-2 small" href="{{ path('fos_user_resetting_request') }}">Mot de
+                            passe oublié ?</a>
+                        <button class="btn btn-sm btn-primary btn-block text-uppercase" type="submit">
                             {{ 'Se connecter'|trans }}
                         </button>
                         <hr class="my-4">
-{#                        <button class="btn btn-lg btn-google btn-block text-uppercase" type="submit"><i#}
-{#                                    class="fab fa-google mr-2"></i> Sign up with Google#}
-{#                        </button>#}
-{#                        <button class="btn btn-lg btn-facebook btn-block text-uppercase" type="submit"><i#}
-{#                                    class="fab fa-facebook-f mr-2"></i> Sign up with Facebook#}
-{#                        </button>#}
+{#                        <div class="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div>#}
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
+    <div id="fb-root"></div>
+
+    {# Bonus: Show all available login link in HWIOAuthBundle #}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v4.0&appId=776377012780606&autoLogAppEvents=1"></script>
+    <script>
+        window.fbAsyncInit = function () {
+            // init the FB JS SDK
+            FB.init({
+                appId: '2415161418561281',                        // App ID from the app dashboard
+                cookie: true,
+                xfbml: true,
+                status: true,
+                version: 'v4.0'                               // Look for social plugins on the page
+            });
+            FB.AppEvents.logPageView();
+        };
+
+        // Load the SDK asynchronously
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {
+                return;
+            }
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+
+        {#function fb_login() {#}
+        {#    FB.getLoginStatus(function (response) {#}
+        {#        if (response.status === 'connected') {#}
+        {#            // connected#}
+        {#            alert('Already connected, redirect to login page to create token.');#}
+        {#            document.location = "{{ url("hwi_oauth_service_redirect", {service: "facebook"}) }}";#}
+        {#        } else {#}
+        {#            // not_authorized#}
+        {#            FB.login(function (response) {#}
+        {#                if (response.authResponse) {#}
+        {#                    document.location = "{{ url("hwi_oauth_service_redirect", {service: "facebook"}) }}";#}
+        {#                } else {#}
+        {#                    alert('Cancelled.');#}
+        {#                }#}
+        {#            }, {scope: 'email'});#}
+        {#        }#}
+        {#    });#}
+        {#}#}
+    </script>
 {% endblock %}

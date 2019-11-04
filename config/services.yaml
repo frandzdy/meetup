@@ -8,6 +8,14 @@ parameters:
     default_locale: 'fr'
     mailer_user: 'frandzydypro@gmail.com'
     mailer_password: 'snakeeater95300'
+    uploads_directory: 'uploads/img/'
+    uploads_directory_calendar: 'uploads/calendar/'
+    google_key: '6LcEhL4UAAAAAHusaJP8bi24pMqBog2UZWpSa7h3'
+    google_secret_key: '6LcEhL4UAAAAAB6Pro53JUvAw1c4lhS83ZiSNrTP'
+    google_api_recaptacha: 'https://www.google.com/recaptcha/api/siteverify'
+    google_ua: 'GTM-W35GMJG'
+    google_tag_ua: 'UA-150385430-1'
+    google_map_api_key: 'AIzaSyCzXxPYLCcbKkaUt0zqosFtGhcA_WzxU9k'
 
 
 services:
@@ -33,11 +41,23 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-#    App\MessageHandler\:
-#        resource: '../src/MessageHandler'
-#        tags: ['messenger.message_handler']
+    App\MessageHandler\:
+        resource: '../src/MessageHandler'
+        tags: ['messenger.message_handler']
 #    App\MessageHandler\InscriptionHandler:
 #            tags: ['messenger.message_handler']
-#    App\MessageHandler\NotificationHandler:
-#            tags: ['messenger.message_handler'
+    App\MessageHandler\NotificationHandler:
+        tags: ['messenger.message_handler']
+        arguments:
+            - '@mailer'
+            - '@templating'
 
+    App\Service\FileUploader:
+        arguments:
+            - '%uploads_directory%'
+
+    App\Service\CalendarService:
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@filesystem'
+            - '%uploads_directory%'
