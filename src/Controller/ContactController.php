@@ -19,18 +19,13 @@ class ContactController extends AbstractController
     /**
      * @Route("/", name="sm_front_contact", methods={"GET"})
      */
-    public function contact(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator)
+    public function contact(Request $request, EntityManagerInterface $em)
     {
         $contactQuery = $em->getRepository(User::class)->getContact($this->getUser());
-        $contacts = $paginator->paginate(
-            $contactQuery,
-            $request->query->getInt('page', 1), /*page number*/
-            10 /*limit per page*/
-        );
 
         return $this->render('contact/index.html.twig',
             [
-                'contacts' => $contacts
+                'contacts' => []
             ]
         );
     }

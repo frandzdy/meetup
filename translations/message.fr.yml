@@ -4,15 +4,20 @@ lg:
         edit: 'Modification de votre compte'
         show: 'Affichage de votre compte'
         info:
-            gender: 'Civilité :'
+            gender: 'Civilité'
+            firstname: 'Prénom'
+            lastname: 'Nom'
             birthdate: 'Date de naissance'
             address: 'Adresse'
             code_postal: 'Code postal'
             city: 'Ville'
+            email: 'E-mail'
+            password: 'Mot de passe'
+            repeat-password: 'Confirmer votre mot de passe'
     event:
-        create: 'Création évènement sportif'
-        edit: 'Modification évènement sportif'
-        show: 'Affichage évènement sportif'
+        create: 'Créer évènement'
+        edit: 'Modifier évènement'
+        show: 'Afficher évènement'
     connexion:
         identifiant: 'Identifiant'
         password: 'Mot de passe'
@@ -20,3 +25,7 @@ lg:
         forgotten_password: 'Mot de passe oublié ?'
         log_in: 'Connexion'
         log_out: 'Déconnexion'
+    form:
+        submit: "Sauvergader"
+        update: "Modifier"
+        select: "Choisissez"

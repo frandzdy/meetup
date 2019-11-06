@@ -1,6 +1,6 @@
 {
   "name": "meet-up",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "devDependencies": {
     "brunch": "^2.4.2",
@@ -17,9 +17,10 @@
   "dependencies": {
     "@fullcalendar/bootstrap": "^4.3.0",
     "@fullcalendar/core": "^4.3.1",
+    "express": "^4.17.1",
     "md5": "^2.2.1",
     "mysql": "^2.17.1",
-    "socketio": "^1.0.0",
-    "sweetalert": "^2.1.2"
+    "sweetalert": "^2.1.2",
+    "socket.io": "^2.3.0"
   }
 }

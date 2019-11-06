@@ -1,22 +1,31 @@
 lg:
     person:
         create: 'Inscription'
-        edit: 'Edit profile'
-        show: 'Show profile'
+        edit: 'Modification de votre compte'
+        show: 'Affichage de votre compte'
         info:
-            gender: 'Civilité :'
-            birthdate: 'Birthdate'
-            address: 'Address'
+            gender: 'Civilité'
+            firstname: 'Prénom'
+            lastname: 'Nom'
+            birthdate: 'Date de naissance'
+            address: 'Adresse'
             code_postal: 'Code postal'
-            city: 'City'
+            city: 'Ville'
+            email: 'E-mail'
+            password: 'Mot de passe'
+            repeat-password: 'Confirmer votre mot de passe'
     event:
-        create: 'Create sport event'
-        edit: 'Edit sport event'
-        show: 'Show sport event'
+        create: 'Créer évènement'
+        edit: 'Modifier évènement'
+        show: 'Afficher évènement'
     connexion:
         identifiant: 'Identifiant'
-        password: 'PassWord'
-        rememberme: 'Remember me'
-        forgotten_password: 'Forgotten password ?'
-        log_in: 'Log in'
-        log_out: 'Log out'
+        password: 'Mot de passe'
+        rememberme: 'Se souvenir de moi'
+        forgotten_password: 'Mot de passe oublié ?'
+        log_in: 'Connexion'
+        log_out: 'Déconnexion'
+    form:
+        submit: "Sauvergader"
+        update: "Modifier"
+        select: "Choisissez"

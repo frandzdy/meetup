@@ -32,61 +32,67 @@ class UserType extends AbstractType
     {
         $builder
             ->add('firstname', TextType::class,
-                array(
-                    'label' => 'Prénom',
+                [
+                    'label' => 'lg.person.info.firstname',
                     'required' => true,
-                )
+                ]
             )
             ->add('lastname', TextType::class,
-                array(
-                    'label' => 'Nom',
+                [
+                    'label' => 'lg.person.info.lastname',
                     'required' => true,
-                )
+                ]
             )
             ->add('adresse', TextType::class,
-                array(
-                    'label' => 'Adresse',
+                [
+                    'label' => 'lg.person.info.address',
                     'required' => true,
-                )
+                ]
             )
             ->add('codePostal', TextType::class,
-                array(
-                    'label' => 'Code postal',
+                [
+                    'label' => 'lg.person.info.code_postal',
                     'required' => true,
-                )
+                ]
             )
             ->add('ville', TextType::class,
-                array(
-                    'label' => 'Ville',
+                [
+                    'label' => 'lg.person.info.city',
                     'required' => true,
-                )
+                ]
             )
             ->add('email', EmailType::class,
-                array(
-                    'label' => 'E-mail',
+                [
+                    'label' => 'lg.person.info.email',
                     'required' => true,
-                )
+                ]
             )
             ->add('dateNaissance', DateType::class,
-                array(
-                    'label' => 'Date de naissance',
+                [
+                    'label' => 'lg.person.info.birthdate',
                     'widget' => 'single_text',
                     'input' => 'datetime',
                     'format' => 'dd/MM/yyyy',
-                    'attr' => ['class' => 'datepicker'],
+                    'attr' =>
+                        [
+                            'class' => 'datepicker'
+                        ],
                     'required' => true
-                )
+                ]
             )
-            ->add('civilite', EntityType::class, array(
-                    'label' => 'Civilité',
+            ->add('civilite', EntityType::class,
+                [
+                    'label' => 'lg.person.info.gender',
                     'class' => RefCivilite::class,
                     'choice_label' => 'civilite',
-                    'empty_data' => 'lg_choisissez',
+                    'empty_data' => 'lg.form.select',
                     'expanded' => false,
                     'multiple' => false,
                     'required' => true,
-                    'attr' => ['class' => 'custom-select']
-                )
+                    'attr' => [
+                        'class' => 'custom-select'
+                    ]
+                ]
             )->add('captcha', HiddenType::class,
                 [
                     'mapped' => false,
@@ -107,50 +113,85 @@ class UserType extends AbstractType
                 // si on n'a pas de password et pas d'id user alors on est en création
                 if (current($options['validation_groups']) == 'create') {
                     $event->getForm()->add('password', RepeatedType::class,
-                        array(
+                        [
                             'type' => PasswordType::class,
                             'invalid_message' => 'Les mots de passe doivent correspondre',
-                            'options' => array('attr' => array('class' => 'password-field')),
+                            'options' =>
+                                [
+                                    'attr' =>
+                                        [
+                                            'class' => 'password-field'
+                                        ]
+                                ],
                             'required' => true,
-                            'first_options' => array('label' => 'Password'),
-                            'second_options' => array('label' => 'Repeat Password'),
-                        )
-                    )->add('avatar', FileType::class, [
-                        'label' => 'Avatar',
-                        'required' => true,
-                        'mapped' => false,
-                        // unmapped fields can't define their validation using annotations
-                        // in the associated entity, so you can use the PHP constraint classes
-                    ])->add('username', TextType::class,
-                        array(
+                            'first_options' =>
+                                [
+                                    'label' => 'lg.person.info.password'
+                                ],
+                            'second_options' =>
+                                [
+                                    'label' => 'lg.person.info.repeat-password'
+                                ],
+                        ]
+                    )->add('avatar', FileType::class,
+                        [
+                            'label' => 'Avatar',
+                            'required' => true,
+                            'mapped' => false,
+                            // unmapped fields can't define their validation using annotations
+                            // in the associated entity, so you can use the PHP constraint classes
+                        ]
+                    )->add('username', TextType::class,
+                        [
                             'label' => 'Identifiant',
                             'required' => true
-                        )
+                        ]
+                    )->add('save', SubmitType::class,
+                        [
+                            'label' => 'lg.form.submit'
+                        ]
                     );
-                    $event->getForm()->add('save', SubmitType::class, array('label' => 'Sauvegarder'));
                 } else {
                     $event->getForm()->add('password', RepeatedType::class,
                         [
                             'type' => PasswordType::class,
                             'invalid_message' => 'Les mots de passe doivent correspondre',
-                            'options' => array('attr' => array('class' => 'password-field')),
+                            'options' =>
+                                [
+                                    'attr' =>
+                                        [
+                                            'class' => 'password-field'
+                                        ]
+                                ],
                             'required' => false,
-                            'first_options' => array('label' => 'Mot de passe'),
-                            'second_options' => array('label' => 'Confirmer Mot de passe'),
+                            'first_options' =>
+                                [
+                                    'label' => 'lg.person.info.password'
+                                ],
+                            'second_options' =>
+                                [
+                                    'label' => 'lg.person.info.repeat-password'
+                                ],
                         ]
                     )->add('avatar', FileType::class,
                         [
                             'label' => 'Avatar',
                             'required' => false,
                             'mapped' => false,
-                        ])->add('username', TextType::class,
-                        array(
+                        ]
+                    )->add('username', TextType::class,
+                        [
                             'label' => 'Identifiant',
                             'required' => false,
-                            'attr' => ['readonly' => 'readonly']
-                        )
+                            'attr' => [
+                                'readonly' => 'readonly'
+                            ]
+                        ]
+                    )->add('save', SubmitType::class,
+                        [
+                            'label' => 'lg.form.update'
+                        ]
                     );
-                    $event->getForm()->add('save', SubmitType::class, array('label' => 'Modifier'));
                 }
 
             }

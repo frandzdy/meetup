@@ -13,6 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Events
 {
+    use TraitDate, TraitAuthor;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

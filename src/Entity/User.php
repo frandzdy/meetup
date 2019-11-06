@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -17,7 +16,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class User extends BaseUser
 {
-    use Date;
+    use TraitDate;
+
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -120,6 +120,11 @@ class User extends BaseUser
     private $walls;
 
     /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Communaute", mappedBy="members")
+     */
+    private $communautes;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -130,6 +135,7 @@ class User extends BaseUser
         $this->discussions = new ArrayCollection();
         $this->events = new ArrayCollection();
         $this->walls = new ArrayCollection();
+        $this->communautes = new ArrayCollection();
     }
 
     /**
@@ -474,6 +480,34 @@ class User extends BaseUser
             if ($wall->getUserId() === $this) {
                 $wall->setUserId(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Communaute[]
+     */
+    public function getCommunautes(): Collection
+    {
+        return $this->communautes;
+    }
+
+    public function addCommunaute(Communaute $communaute): self
+    {
+        if (!$this->communautes->contains($communaute)) {
+            $this->communautes[] = $communaute;
+            $communaute->addMember($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommunaute(Communaute $communaute): self
+    {
+        if ($this->communautes->contains($communaute)) {
+            $this->communautes->removeElement($communaute);
+            $communaute->removeMember($this);
         }
 
         return $this;

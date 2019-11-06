@@ -1,24 +1,17 @@
-var http = require('http');
+var app = require('express')();
+var http = require('http').createServer(app);
+var io = require('socket.io')(http);
 var md5 = require('md5');
 var mysql = require('mysql');
-var mysql = require('mysql');
-/**
- *  Création Serveur
- */
-var httpServer = http.createServer(function (req, res) {
-    res.end('Un nouvelle Utilisateur');
+
+app.get('/', function(req, res){
+    res.end('a user connected');
 });
-/**
- * Ecoute du port 1337
- */
-httpServer.listen(1337);
-/**
- *  Socket protocol hhtp
- */
-var io = require('socket.io').listen(httpServer);
-/**
- *
- */
+
+http.listen(1337, function(){
+    console.log('listening on *:1337');
+});
+
 var connexion = mysql.createConnection(
     {
         host: '192.168.1.30',

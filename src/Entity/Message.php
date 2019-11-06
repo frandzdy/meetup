@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Message
 {
+    use TraitDate, TraitAuthor;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -21,11 +22,6 @@ class Message
      * @ORM\Column(type="text")
      */
     private $message;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $create_at;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="messagesSender")
@@ -56,16 +52,9 @@ class Message
         return $this;
     }
 
-    public function getCreateAt()
+    public function getCreatedAtFormatted()
     {
-        return $this->create_at->format('d/m/y h:m:i');
-    }
-
-    public function setCreateAt(\DateTimeInterface $create_at): self
-    {
-        $this->create_at = $create_at;
-
-        return $this;
+        return $this->getCreatedAt()->format('d/m/y h:m:i');
     }
 
     public function getSender(): ?User
