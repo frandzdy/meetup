@@ -66,7 +66,7 @@ class ChatController extends AbstractController
                 foreach ($discussion->getUsers() as $dUser) {
                     $tokenUsers[] = $dUser->getToken();
                 }
-                
+
                 return new JsonResponse([
                     'success' => $res, 'resultat' => [
                         'groupId' => $discussion->getToken(),

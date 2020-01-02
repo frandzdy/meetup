@@ -1,6 +1,8 @@
 {
     "type": "project",
     "license": "proprietary",
+    "name": "comm/meetup",
+    "description": "Site Communautaire Meet-up",
     "require": {
         "php": "^7.1.3",
         "ext-ctype": "*",
