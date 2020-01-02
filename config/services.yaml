@@ -44,8 +44,14 @@ services:
     App\MessageHandler\:
         resource: '../src/MessageHandler'
         tags: ['messenger.message_handler']
-#    App\MessageHandler\InscriptionHandler:
-#            tags: ['messenger.message_handler']
+
+    App\MessageHandler\InscriptionHandler:
+        tags: ['messenger.message_handler']
+        arguments:
+            - '@mailer'
+            - '@templating'
+            - '@twig'
+
     App\MessageHandler\NotificationHandler:
         tags: ['messenger.message_handler']
         arguments:
