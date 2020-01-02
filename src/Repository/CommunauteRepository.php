@@ -14,4 +14,20 @@ class CommunauteRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Communaute::class);
     }
+
+    /**
+     * @param int $userId
+     * @return array
+     */
+    public function getCommunity(int $userId) : array {
+
+        $qb = $this->createQueryBuilder('c');
+
+        $qb->select('c')
+        ->innerJoin('c.members', 'm')
+        //->where('m.id = :userId')
+        ->where($qb->expr()->eq('m.id', $userId));
+
+        return  $qb->getQuery()->getResult();
+    }
 }

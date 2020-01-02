@@ -53,6 +53,7 @@ class UserRepository extends ServiceEntityRepository
             foreach ($user->getMyUsers() as $contact) {
                 $contactIds[] = $contact->getId();
             }
+
             return $this->createQueryBuilder('user')
                 ->where('user.id in (:ids)')
                 ->setParameter('ids', $contactIds)

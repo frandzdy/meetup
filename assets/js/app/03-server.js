@@ -100,7 +100,7 @@ io.sockets.on('connection', function (socket) {
                     console.error('aucune message trouvé');
                 }
             });
-        connexion.query('SELECT sd.token, sm.message, sm.create_at, sdu.user_id FROM sm_discussion sd ' +
+        connexion.query('SELECT sd.token, sm.message, sm.created_at, sdu.user_id FROM sm_discussion sd ' +
             'join sm_message sm on sd.id = sm.discussion_id ' +
             'join sm_user su on sm.sender_id = su.id ' +
             'join sm_discussion_user sdu on sd.id = sdu.discussion_id AND su.id = sdu.user_id ' +

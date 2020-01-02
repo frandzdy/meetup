@@ -9,12 +9,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
     /**
-     * @Route("/", name="homes")
+     * @Route("/", name="front_home")
      */
     public function index(EntityManagerInterface $em)
     {
         $user = $this->getUser();
-        
+
         return $this->render('home/index.html.twig', [
             'user' => $user ? $user : [],
         ]);

@@ -48,6 +48,7 @@ $(function () {
                     start: start.toISOString(),
                     end: end.toISOString()
                 },
+                method: 'post',
                 success: function(data) {
                     callback(data.events);
                 }

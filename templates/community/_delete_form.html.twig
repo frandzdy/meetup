@@ -1,0 +1,6 @@
+
+<form method="delete" action="{{ path('front_community_delete', {'id': community.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ community.id) }}">
+    <button class="btn btn-danger">Delete</button>
+</form>

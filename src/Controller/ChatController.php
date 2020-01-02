@@ -25,7 +25,7 @@ class ChatController extends AbstractController
     private $step = 5;
     private $limit = 5;
     private $max;
-    
+
 
     /**
      * ChatController constructor.
@@ -48,7 +48,7 @@ class ChatController extends AbstractController
     }
 
     /**
-     * @Route("/save_message/{discussion}/{token_id}", name="chat_save_message", options={"expose"=true}, methods={"POST"})
+     * @Route("/save_message/{discussion}/{token_id}", name="front_chat_save_message", options={"expose"=true}, methods={"POST"})
      */
     public function saveChatMessage(string $discussion, string $token_id, Request $request, ChatService $chatService, EntityManagerInterface $em)
     {
@@ -71,7 +71,7 @@ class ChatController extends AbstractController
                         'groupId' => $discussion->getToken(),
                         'groupUsers' => $tokenUsers,
                         'message' => $res->getMessage(),
-                        'create_at' => $res->getCreateAt(),
+                        'created_at' => $res->getCreatedAt(),
                         'id' => $user->getToken(),
                         'lastname' => $user->getFirstname(),
                         'firstname' => $user->getLastname(),
@@ -88,11 +88,10 @@ class ChatController extends AbstractController
     }
 
     /**
-     * @Route("/load_message", name="load_message", options={"expose"=true}, methods={"POST"})
+     * @Route("/load_message", name="front_load_message", options={"expose"=true}, methods={"POST"})
      */
     public function loadMessage(Request $request, ChatService $chatService)
     {
-
         if ($request->isXmlHttpRequest()) {
             $groupeSearching = (string)$request->request->get('groupe') ?: 0;
             $step = (int)$request->request->get('step') ?: 5;

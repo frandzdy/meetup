@@ -6,6 +6,8 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-zip": "*",
+        "ext-curl": "*",
+        "ext-json": "*",
         "beberlei/doctrineextensions": "^1.2",
         "friendsofsymfony/jsrouting-bundle": "^2.4",
         "friendsofsymfony/user-bundle": "~2.0",

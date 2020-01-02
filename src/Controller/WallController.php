@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class WallController extends AbstractController
 {
     /**
-     * @Route("/", name="home")
+     * @Route("/wall", name="front_wall")
      */
     public function wall(Request $request, EntityManagerInterface $em)
     {

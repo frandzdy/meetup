@@ -34,7 +34,7 @@ class ChatService
             $msg = (new Message())
                 ->setMessage($message)
                 ->setSender($from)
-                ->setCreateAt((new \DateTime('now')))
+                ->setCreatedAt((new \DateTime('now')))
                 ->setDiscussion($discussion);
             $this->em->persist($msg);
             $this->em->flush();

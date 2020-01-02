@@ -3,7 +3,7 @@
   "version": "0.1.1",
   "private": true,
   "devDependencies": {
-    "brunch": "^2.4.2",
+    "brunch": "^3.0.0",
     "css-brunch": "^2.6.1",
     "javascript-brunch": "^2.0.0",
     "sass-brunch": "^2.0.0",

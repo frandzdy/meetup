@@ -1,4 +1,5 @@
 lg:
+    home: 'Acceuil'
     person:
         create: 'Inscription'
         edit: 'Modification de votre compte'
@@ -26,6 +27,11 @@ lg:
         log_in: 'Connexion'
         log_out: 'Déconnexion'
     form:
-        submit: "Sauvergader"
-        update: "Modifier"
-        select: "Choisissez"
+        submit: 'Sauvergader'
+        update: 'Modifier'
+        select: 'Choisissez'
+    community: 'Communauté'
+    members: 'Membre'
+    setting: 'Paramètre'
+    messages: 'Messages'
+    send_message: 'Envoyer un message'

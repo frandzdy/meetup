@@ -24,7 +24,7 @@ class EventController extends AbstractController
 {
 
     /**
-     * @Route("/calendar", name="event_calendar", methods={"GET"})
+     * @Route("/calendar", name="front_event_calendar", methods={"GET"})
      */
     public function calendar(): Response
     {
@@ -131,7 +131,7 @@ class EventController extends AbstractController
      * @param EntityManager $em
      * @return JsonResponse
      *
-     * @Route("/load_calendar", name="front_load_calendar", options={"expose"=true}, methods={"GET"})
+     * @Route("/load_calendar", name="front_load_calendar", options={"expose"=true}, methods={"POST", "GET"})
      */
     public function load(Request $request, EntityManagerInterface $em)
     {

@@ -41,6 +41,11 @@ class Communaute
     private $typeCommunaute;
 
     /**
+     * @ORM\Column(type="text", length=255)
+     */
+    private $description;
+
+    /**
      * Communaute constructor.
      */
     public function __construct()
@@ -126,5 +131,21 @@ class Communaute
         $this->typeCommunaute = $typeCommunaute;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param mixed $description
+     */
+    public function setDescription($description): void
+    {
+        $this->description = $description;
     }
 }
