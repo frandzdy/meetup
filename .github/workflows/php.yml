@@ -9,20 +9,26 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    
+
     - name: Setup Node
       uses: actions/setup-node@v1
       with:
         node-version: '10.x'
-     
+
     - name: Install Dependencies
       run: npm install
-    
+
     - name: Validate composer.json and composer.lock
       run: composer validate
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --no-suggest
+
+    - name: PHP Syntax Checker (Lint)
+      uses: StephaneBour/actions-php-lint@7.3
+      with:
+        # Folder to check syntax
+        dir: .
 
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
