@@ -1,0 +1,109 @@
+{% extends 'layout.html.twig' %}
+{% trans_default_domain 'message' %}
+
+{% block head_title %}
+    {{ 'lg.mur.details'|trans }}
+{% endblock %}
+
+{% block body %}
+    <div class="panel-body">
+        <div class="fb-user-thumb">
+            <img src="{{ asset(uploads_directory_img ~ wall.user.avatar) }}" alt="">
+        </div>
+        <div class="fb-user-details">
+            <h3><a href="#" class="#">{{ wall.user.concatenationNomPrenom }}</a></h3>
+            <p>{{ wall.timeLeft }}</p><!-- near Alaska, USA-->
+        </div>
+        <div class="clearfix"></div>
+        <p class="fb-user-status">
+        <div>{{ wall.message }}</div>
+        </p>
+        {% if wall.photos is not empty %}
+            <p class="image-commentaire-container">
+                {% for photo in wall.photos %}
+                    <img class="image-commentaire rounded img-fluid img-thumbnail" alt="{{ photo.alt }}"
+                         src="{{ asset(uploads_directory_img ~ photo.url) }}"/>
+                {% endfor %}
+            </p>
+        {% endif %}
+        {% if wall.video is not empty %}
+            <p style="max-width: 50%" class="w-embed">
+                <video playsinline crossorigin controls class="video" with="100%" id="wall-video-id-{{ wall.id }}">
+                    <source src="{{ asset(uploads_directory_video ~ wall.video.url) }}">
+                </video>
+            </p>
+        {% endif %}
+        <div class="fb-status-container fb-border">
+            <div class="fb-time-action">
+                <a href="#" title="Leave a comment">Comments</a>
+                <span>-</span>
+                <a href="#" title="Send this to friend or post it on your time line">Share</a>
+                <span>-</span>
+                <div class="likeWall heart {% if user.id in wall.userFromLikes|keys %}active{% endif %}"
+                     data-id="{{ wall.id }}" title="Like this"></div>
+                <span id="nbLikeWall{{ wall.id }}">{{ wall.likes|length|default('0') }}</span>
+            </div>
+        </div>
+        <div class="fb-status-container fb-border fb-gray-bg" id="like_zone{{ wall.id }}">
+            {% if wall.likes is not null and wall.likes|length > 0 %}
+                <div class="fb-time-action like-info">
+                    <a href="#">Jhon Due,</a>
+                    <a href="#">Danieal Kalion</a>
+                    <span>and</span>
+                    <a href="#"></a>
+                    <span>like this</span>
+                </div>
+            {% endif %}
+            <ul class="fb-comments">
+                {% for commentaire in wall.commentaires %}
+                    <li {% if loop.last %}class="wall-last{{ wall.id }}"{% endif %}>
+                        <a href="#" class="cmt-thumb">
+                            <img src="{{ asset(uploads_directory_img ~ commentaire.user.avatar) }}" alt="">
+                        </a>
+                        <div class="cmt-details">
+                            <a href="#">{{ commentaire.user.concatenationNomPrenom }}</a>
+                            <div>{{ commentaire.message }}</div>
+                            <div data-id="{{ commentaire.id }}"
+                                 class="likeCommentaire heart {% if user.id in commentaire.userFromLikes|keys %}active{% endif %}"></div>
+                            <span id="nbLikeCommentaire{{ commentaire.id }}">{{ commentaire.likes|length|default('0') }}</span>
+                            <span>
+                            | {{ commentaire.timeLeft }}
+                        </span>
+                        </div>
+                    </li>
+                {% else %}
+                    <li id="wall-no-comment{{ wall.id }}">
+                        aucun commentaire
+                    </li>
+                {% endfor %}
+                <li>
+                    <a href="#" class="cmt-thumb">
+                        <img src="{{ asset(uploads_directory_img ~ user.avatar) }}" alt="">
+                    </a>
+                    <div class="cmt-form">
+                        <form method="post" action="{{ path('front_wall_commentaire') }}">
+                            <input type="hidden" value="{{ wall.id }}" name="wall[id]">
+                            <textarea class="mentions form-control" placeholder="Write a comment..." required="required"
+                                      name="wall[commentaire]"></textarea>
+                            <input type="hidden" value="{{ csrf_token('add-commentaire') }}" name="wall[token]">
+                            <input type="submit" class="btn btn-info pull-right commentaireToSend"
+                                   value="{{ 'lg.form.post'|trans }}"/>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>require('assets/js/app/06-wall.js');</script>
+    <script>document.addEventListener('DOMContentLoaded', () => { const player = Plyr.setup('.video'); });</script>
+    <script>
+		$(function () {
+
+		});
+    </script>
+{% endblock %}

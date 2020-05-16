@@ -8,7 +8,9 @@ parameters:
     default_locale: 'fr'
     mailer_user: 'frandzydypro@gmail.com'
     mailer_password: 'snakeeater95300'
-    uploads_directory: 'uploads/img/'
+    uploads_directory: 'uploads/'
+    uploads_directory_img: '%uploads_directory%img/'
+    uploads_directory_video: '%uploads_directory%video/'
     uploads_directory_calendar: 'uploads/calendar/'
     google_key: '6LcEhL4UAAAAAHusaJP8bi24pMqBog2UZWpSa7h3'
     google_secret_key: '6LcEhL4UAAAAAB6Pro53JUvAw1c4lhS83ZiSNrTP'
@@ -60,10 +62,13 @@ services:
 
     App\Service\FileUploader:
         arguments:
-            - '%uploads_directory%'
+            - '%uploads_directory_img%'
 
     App\Service\CalendarService:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@filesystem'
             - '%uploads_directory%'
+
+    App\TwigExtension\FilterExtension:
+        tags : ['twig.extension']

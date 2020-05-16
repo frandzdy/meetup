@@ -6,12 +6,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="sm_user")
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- *
+ * @UniqueEntity(fields={"email"}, message="Cette e-mail est déjà existant.")
  * @ORM\HasLifecycleCallbacks()
  */
 class User extends BaseUser
@@ -39,6 +40,11 @@ class User extends BaseUser
 
     /**
      * @ORM\Column(name="avatar", type="string", length=255, nullable=false)
+     * @Assert\File(
+     *     maxSize = "1024k",
+     *     mimeTypes = {"image/jpeg", "image/pjpeg", "image/png"},
+     *     mimeTypesMessage = "Please upload a valid photo format. {{types}}"
+     * )
      */
     private $avatar;
 
@@ -94,15 +100,6 @@ class User extends BaseUser
     private $token;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Discussion", mappedBy="users")
-     */
-    private $discussions;
-    /**
-     * @var
-     * @Assert\Unique(message="Le-mail doit être unique")
-     */
-    protected $email;
-    /**
      * @var
      * @Assert\Unique(message="L'identifiant doit être unique")
      */
@@ -115,7 +112,7 @@ class User extends BaseUser
     private $events;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Wall", mappedBy="user_id")
+     * @ORM\OneToMany(targetEntity="App\Entity\Wall", mappedBy="user")
      */
     private $walls;
 
@@ -123,6 +120,16 @@ class User extends BaseUser
      * @ORM\ManyToMany(targetEntity="App\Entity\Communaute", mappedBy="members")
      */
     private $communautes;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Discussion", mappedBy="users")
+     */
+    private $discussions;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Notification", mappedBy="user", cascade={"persist","remove"})
+     */
+    private $notifications;
 
     /**
      * User constructor.
@@ -136,6 +143,7 @@ class User extends BaseUser
         $this->events = new ArrayCollection();
         $this->walls = new ArrayCollection();
         $this->communautes = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
     /**
@@ -511,5 +519,101 @@ class User extends BaseUser
         }
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function concatenationNomPrenom() :string {
+
+        return sprintf('%s - %s', $this->lastname, $this->firstname);
+    }
+
+    /**
+     * Retourne la liste des likes sur un wall
+     * @return array
+     */
+    public function getLikesFromWall() {
+        $allWallLikes = [];
+        foreach ($this->getWalls() as $wall) {
+            if ($wall) {
+                foreach ($wall->getLikes() as $like) {
+                    if  ($like) {
+                        $allWallLikes[$like->getId()] = $like->getId();
+                    }
+                }
+            }
+        }
+
+        return $allWallLikes;
+    }
+
+    /**
+     * Retourne la liste des likes sur un commentaire du wall
+     * @return array
+     */
+    public function getLikesFromCommentaire() {
+        $allCommentaireLikes = [];
+        foreach ($this->getWalls() as $wall) {
+            if ($wall) {
+                foreach ($wall->getCommentaires() as $commentaire) {
+                    if  ($commentaire) {
+                        foreach ($commentaire->getLikes() as $like) {
+                            if  ($like) {
+                                $allCommentaireLikes[$like->getId()] = $like->getId();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return $allCommentaireLikes;
+    }
+
+    /**
+     * @return Collection|Notification[]
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): self
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications[] = $notification;
+            $notification->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): self
+    {
+        if ($this->notifications->contains($notification)) {
+            $this->notifications->removeElement($notification);
+            // set the owning side to null (unless already changed)
+            if ($notification->getUser() === $this) {
+                $notification->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNbNotificationNonLu() {
+        $i = 0;
+        if ($this->getNotifications()) {
+            foreach ($this->getNotifications() as $notification) {
+                if (!$notification->getLu()) {
+                    $i++;
+                }
+            }
+        }
+        return $i;
     }
 }

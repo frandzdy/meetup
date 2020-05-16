@@ -11,8 +11,8 @@
             {% if user is not null %}
                 {% if user.avatar is not null %}
                     <div class="col-sm-12">
-                        <a class="" href="{{ asset(uploads_directory ~ user.avatar) }}" title="{{ user.avatar }}">
-                            <img src="{{ asset(uploads_directory ~ user.avatar) }}" alt="{{ user.avatar }}"
+                        <a class="" href="{{ asset(uploads_directory_img ~ user.avatar) }}" title="{{ user.avatar }}">
+                            <img src="{{ asset(uploads_directory_img ~ user.avatar) }}" alt="{{ user.avatar }}"
                                  style="width:100px" class="right avatar responsive">
                         </a>
                     </div>

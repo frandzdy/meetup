@@ -8,7 +8,7 @@
                 {% for friend in user.myUsers if friend is defined %}
                     <span class="pull-left friendLists connected_{{ friend.token }}" data-dis="" id="{{ friend.discussions[0].token }}">
                         {% if friend.avatar %}
-                            <img src="{{ asset(uploads_directory ~ friend.avatar) }}" alt="{{ friend.avatar }}" id="avatar-{{ friend.token }}"
+                            <img src="{{ asset(uploads_directory_img ~ friend.avatar) }}" alt="{{ friend.avatar }}" id="avatar-{{ friend.token }}"
                                  title="{{ friend.lastname ~ friend.firstname }}" class="avatar-chat right avatar responsive">
                         {% endif %}
                     </span>
@@ -52,4 +52,26 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script>
+	    navigator.getUserMedia = navigator.getUserMedia ||
+		    navigator.webkitGetUserMedia ||
+		    navigator.mozGetUserMedia;
+
+	    if (navigator.getUserMedia) {
+		    navigator.getUserMedia({ audio: true, video: { width: 1280, height: 720 } },
+			    function(stream) {
+				    var video = document.querySelector('video');
+				    video.src = window.URL.createObjectURL(stream);
+				    video.onloadedmetadata = function(e) {
+					    video.play();
+				    };
+			    },
+			    function(err) {
+				    console.log("The following error occurred: " + err.name);
+			    }
+		    );
+	    } else {
+		    console.log("getUserMedia not supported");
+	    }
+    </script>
 {% endblock %}

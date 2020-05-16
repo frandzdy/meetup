@@ -54,7 +54,7 @@ class Message
 
     public function getCreatedAtFormatted()
     {
-        return $this->getCreatedAt()->format('d/m/y h:m:i');
+        return $this->getCreatedAt()->format('d-m-Y H:i:s');
     }
 
     public function getSender(): ?User

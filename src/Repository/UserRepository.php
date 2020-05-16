@@ -60,4 +60,43 @@ class UserRepository extends ServiceEntityRepository
                 ->getQuery();
         }
     }
+
+    /**
+     * @param User $user
+     * @return mixed
+     */
+    public function getContactAjax($filtre, User $user)
+    {
+        $contactIds = [];
+        if (!$user->getMyUsers()->isEmpty()) {
+            foreach ($user->getMyUsers() as $contact) {
+                $contactIds[] = $contact->getId();
+            }
+        }
+
+        return $this->createQueryBuilder('user')
+            ->select("CONCAT(user.lastname, ' ', user.firstname) as value")
+            //->addSelect("CONCAT('/uploads/img/', user.avatar) as image")
+            ->addSelect('user.token as uid')
+            ->where('user.lastname like :filtre')
+            ->orWhere('user.firstname like :filtre')
+            ->setParameter('filtre', $filtre.'%')
+            ->andWhere('user.id in (:ids)')
+            ->setParameter('ids', $contactIds)
+            ->getQuery()->getArrayResult();
+    }
+
+    /**
+     * @param User $user
+     */
+    public function getUserNotfications(User $user) {
+
+        return $this->createQueryBuilder('user')
+            ->select('user, notifications')
+            ->leftJoin('user.notifications', 'notifications')
+            ->where('user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()->getSingleResult()
+        ;
+    }
 }

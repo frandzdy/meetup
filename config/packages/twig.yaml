@@ -7,6 +7,8 @@ twig:
     form_themes: ['bootstrap_4_layout.html.twig']
     globals:
         uploads_directory: '%uploads_directory%'
+        uploads_directory_img: '%uploads_directory_img%'
+        uploads_directory_video: '%uploads_directory_video%'
         google_ua: '%google_ua%'
         google_tag_ua: '%google_tag_ua%'
         google_key: '%google_key%'

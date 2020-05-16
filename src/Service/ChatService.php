@@ -30,21 +30,15 @@ class ChatService
      */
     public function saveMessage(Discussion $discussion, String $message, User $from): ?Message
     {
-        try {
-            $msg = (new Message())
-                ->setMessage($message)
-                ->setSender($from)
-                ->setCreatedAt((new \DateTime('now')))
-                ->setDiscussion($discussion);
-            $this->em->persist($msg);
-            $this->em->flush();
+        $msg = (new Message())
+            ->setMessage($message)
+            ->setSender($from)
+            ->setCreatedAt((new \DateTime()))
+            ->setDiscussion($discussion);
+        $this->em->persist($msg);
+        $this->em->flush();
 
-            return $msg;
-        } catch (\Exception $exception) {
-
-            return null;
-        }
-
+        return $msg;
     }
 
     /**
@@ -52,7 +46,7 @@ class ChatService
      * @param User $me
      * @return array
      */
-    public function getDiscussion(string $groupeSearchingToken, User $me, int $step, int $order)
+    public function getDiscussion(string $groupeSearchingToken, User $me, int $step)
     {
         $groupe = $this->em->getRepository(Discussion::class)->findOneBy(
             ['token' => $groupeSearchingToken]
@@ -61,8 +55,7 @@ class ChatService
             return [
                 'res' => $this->em->getRepository(Message::class)->getAllMessageFromGroupe(
                     $groupe,
-                    $step,
-                    $order),
+                    $step),
                 'groupeId' => $groupe->getToken()
             ];
         }

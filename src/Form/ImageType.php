@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Image;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,22 +17,25 @@ class ImageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-			->add('file', FileType::class,
+            ->add('file', FileType::class,
                 array(
-                    'label' => 'Choisir un fichier',
-                    "required"=> false
+                    'label' => 'Choisir une fichier',
+                    'required' => false,
+                    'multiple' => true,
+                    'attr' => [
+                        'accept' => 'image/*'
+                    ]
                 )
-            )
-        ;
+            );
     }
 
     /**
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'App\Entity\Image'
+            'data_class' => null
         ));
     }
 
@@ -40,6 +44,6 @@ class ImageType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'oc_platformbundle_image';
+        return 'sm_image';
     }
 }

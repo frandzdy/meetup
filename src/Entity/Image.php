@@ -4,11 +4,11 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Image
  *
- * @ORM\Table(name="oc_image")
+ * @ORM\Table(name="sm_image")
  * @ORM\Entity(repositoryClass="App\Repository\ImageRepository")
  * @ORM\HasLifecycleCallbacks
  */
@@ -27,6 +27,11 @@ class Image
      * @var string
      *
      * @ORM\Column(name="url", type="string", length=255, nullable=true)
+     *    * @Assert\File(
+     *     maxSize = "1024k",
+     *     mimeTypes = {"image/*"},
+     *     mimeTypesMessage = "Please upload a valid photo format. {{types}}"
+     * )
      */
     private $url;
 
@@ -37,6 +42,10 @@ class Image
      */
     private $alt;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\wall", inversedBy="photos")
+     */
+    private $wall;
 
     /**
      * Get id
@@ -150,7 +159,7 @@ class Image
         if (null === $this->file)
             return;
 
-        $this->url = $this->getId() . '.' . $this->file->getClientOriginalName();
+        $this->url = uniqid('', true);
         $this->alt = $this->file->getClientOriginalName();
     }
 
@@ -190,5 +199,23 @@ class Image
     public function getPathView()
     {
         return $this->getUploadDir() . '/' . $this->url;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWall()
+    {
+        return $this->wall;
+    }
+
+    /**
+     * @param mixed $wall
+     */
+    public function setWall($wall): self
+    {
+        $this->wall = $wall;
+
+        return $this;
     }
 }

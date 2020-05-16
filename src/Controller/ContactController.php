@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -35,5 +36,26 @@ class ContactController extends AbstractController
         return [
             'contacts' => $pagination ?? []
         ];
+    }
+
+    /**
+     * @Route("/contact_ajax", name="_ajax", methods={"GET", "POST"}, options={"expose"="true"})
+     * @Template()
+     */
+    public function ajax(Request $request, EntityManagerInterface $em)
+    {
+        if ($request->isXmlHttpRequest()) {
+            $contact = $em->getRepository(User::class)->getContactAjax($request->query->get('term'), $this->getUser());
+
+            if ($contact) {
+                return new JsonResponse($contact, 200);
+            } else {
+                return new JsonResponse([], 200);
+            }
+        }
+
+        return new JsonResponse([
+            'contacts' => []
+        ], 500);
     }
 }

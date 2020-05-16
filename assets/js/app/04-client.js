@@ -127,9 +127,7 @@ $(function () {
                     url: Routing.generate('front_load_message'),
                     data: {
                         groupe: $('#groupeId').val(),
-                        step: step,
-                        order: 1,
-                        scroll: 1
+                        step: step
                     },
                     method: "POST",
                     beforeSend: function () {

@@ -72,12 +72,12 @@ class ChatController extends AbstractController
                         'groupId' => $discussion->getToken(),
                         'groupUsers' => $tokenUsers,
                         'message' => $res->getMessage(),
-                        'created_at' => $res->getCreatedAt(),
+                        'created_at' => $res->getCreatedAtFormatted(),
                         'id' => $user->getToken(),
                         'lastname' => $user->getFirstname(),
                         'firstname' => $user->getLastname(),
                         'email' => $user->getEmail(),
-                        'avatar' => $this->getParameter('uploads_directory')."/" .$user->getAvatar(),
+                        'avatar' => $this->getParameter('uploads_directory_img')."/" .$user->getAvatar(),
                         'token' => $user->getToken(),
                     ]
                 ], 200);
@@ -96,9 +96,8 @@ class ChatController extends AbstractController
         if ($request->isXmlHttpRequest()) {
             $groupeSearching = (string)$request->request->get('groupe') ?: 0;
             $step = (int)$request->request->get('step') ?: 5;
-            $order = (int)$request->request->get('order') ?: 0;
 
-            if ($res = $chatService->getDiscussion($groupeSearching, $this->getUser(), $step, $order)) {
+            if ($res = $chatService->getDiscussion($groupeSearching, $this->getUser(), $step)) {
 
                 return new JsonResponse(['success' => true, 'resultat' => $res['res'], 'groupeId' => $res['groupeId']], 200);
             }

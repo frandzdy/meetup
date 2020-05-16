@@ -43,7 +43,6 @@ window.createIframeModal = function (src, options, title) {
     return $modal;
 };
 
-
 // Vérifier le téléphone existe
 window.checkPhoneExist = function (check_path, excludeId, country) {
     $('.check-phone').click(function () {
@@ -96,6 +95,29 @@ window.checkPhoneExist = function (check_path, excludeId, country) {
     });
 };
 
+window.myToast = function($title, $msg, $icon){
+    $.toast({
+        heading: $msg, // Optional heading to be shown on the toast
+        text: $title, // Text that is to be shown in the toast
+        icon: 'info',
+        showHideTransition: 'slide', // fade, slide or plain
+        allowToastClose: true, // Boolean value true or false
+        hideAfter: 3000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
+        stack: false, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
+        position: 'top-center', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
+
+        bgColor: '#07b480',  // Background color of the toast
+        textColor: '#ffffff',  // Text color of the toast
+        textAlign: 'left',  // Text alignment i.e. left, right or center
+        loader: false,  // Whether to show loader or not. True by default
+        loaderBg: '#59c694',  // Background color of the toast loader
+        beforeShow: function () {}, // will be triggered before the toast is shown
+        afterShown: function () {}, // will be triggered after the toat has been shown
+        beforeHide: function () {}, // will be triggered before the toast gets hidden
+        afterHidden: function () {}  // will be triggered after the toast has been hidden
+    });
+
+};
 
 $(function () {
     // Datetimepicker bouton
@@ -143,6 +165,5 @@ $(function () {
         return false;
     });
     // auto complete event creation
-
 });
 

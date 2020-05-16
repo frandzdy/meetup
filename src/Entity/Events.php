@@ -75,11 +75,6 @@ class Events
     private $participants;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Wall", mappedBy="event_id")
-     */
-    private $walls;
-
-    /**
      * @ORM\Column(name="i_calendar", type="text", nullable=true)
      */
     private $iCalendar;
@@ -95,7 +90,6 @@ class Events
     public function __construct()
     {
         $this->participants = new ArrayCollection();
-        $this->walls = new ArrayCollection();
     }
 
 
@@ -239,37 +233,6 @@ class Events
     public function setPlace($place): self
     {
         $this->place = $place;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Wall[]
-     */
-    public function getWalls(): Collection
-    {
-        return $this->walls;
-    }
-
-    public function addWall(Wall $wall): self
-    {
-        if (!$this->walls->contains($wall)) {
-            $this->walls[] = $wall;
-            $wall->setEventId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeWall(Wall $wall): self
-    {
-        if ($this->walls->contains($wall)) {
-            $this->walls->removeElement($wall);
-            // set the owning side to null (unless already changed)
-            if ($wall->getEventId() === $this) {
-                $wall->setEventId(null);
-            }
-        }
 
         return $this;
     }

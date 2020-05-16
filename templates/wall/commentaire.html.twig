@@ -1,0 +1,16 @@
+{% trans_default_domain 'message' %}
+
+<li class="wall-last{{ commentaire.wall.id }}">
+    <a href="#" class="cmt-thumb">
+        <img src="{{ asset(uploads_directory_img ~ commentaire.user.avatar) }}" alt="">
+    </a>
+    <div class="cmt-details">
+        <a href="#">{{ commentaire.user.concatenationNomPrenom }}</a>
+        <div>{{ commentaire.message }}</div>
+        <div data-id="{{ commentaire.id }}" class="likeCommentaire heart"></div>
+        <span id="nbLikeCommentaire{{ commentaire.id }}">{{ commentaire.likes|length|default('0') }}</span>
+        <span>
+           | {{ commentaire.timeLeft }}
+        </span>
+    </div>
+</li>

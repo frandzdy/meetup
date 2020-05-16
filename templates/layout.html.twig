@@ -8,14 +8,16 @@
 
     <title>{% block title %}Meetup Sport{% endblock %}</title>
     <script type="text/javascript">
-        dataLayer = [];
+		dataLayer = [];
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-            dataLayer = [{
-                'user_id': {{ app.user.id }},
-            }];
+		dataLayer = [{
+			'user_id': {{ app.user.id }},
+		}];
         {% endif %}
     </script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
     <!-- Make sure you put this AFTER Leaflet's CSS -->
     <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
             integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
@@ -26,52 +28,52 @@
         <link rel="stylesheet" type="text/css" href="{{ preload(asset('css/app.css'), { as: 'style' }) }}">
     {% endblock %}
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.2/plyr.css"/>
+    {#    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_map_api_key }}libraries=places" async#}
+    {#            defer></script>#}
+    {#    <script>#}
+    {#        var map;#}
+    {#        var service;#}
+    {#        var infowindow;#}
 
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_map_api_key }}libraries=places" async
-            defer></script>
-    <script>
-        var map;
-        var service;
-        var infowindow;
+    {#        function initMap() {#}
+    {#            var sydney = new google.maps.LatLng(-33.867, 151.195);#}
 
-        function initMap() {
-            var sydney = new google.maps.LatLng(-33.867, 151.195);
+    {#            infowindow = new google.maps.InfoWindow();#}
 
-            infowindow = new google.maps.InfoWindow();
+    {#            map = new google.maps.Map(#}
+    {#                document.getElementById('map'), {center: sydney, zoom: 15});#}
 
-            map = new google.maps.Map(
-                document.getElementById('map'), {center: sydney, zoom: 15});
+    {#            var request = {#}
+    {#                query: 'Museum of Contemporary Art Australia',#}
+    {#                fields: ['name', 'geometry'],#}
+    {#            };#}
 
-            var request = {
-                query: 'Museum of Contemporary Art Australia',
-                fields: ['name', 'geometry'],
-            };
+    {#            service = new google.maps.places.PlacesService(map);#}
 
-            service = new google.maps.places.PlacesService(map);
+    {#            service.findPlaceFromQuery(request, function (results, status) {#}
+    {#                if (status === google.maps.places.PlacesServiceStatus.OK) {#}
+    {#                    for (var i = 0; i < results.length; i++) {#}
+    {#                        createMarker(results[i]);#}
+    {#                    }#}
 
-            service.findPlaceFromQuery(request, function (results, status) {
-                if (status === google.maps.places.PlacesServiceStatus.OK) {
-                    for (var i = 0; i < results.length; i++) {
-                        createMarker(results[i]);
-                    }
+    {#                    map.setCenter(results[0].geometry.location);#}
+    {#                }#}
+    {#            });#}
+    {#        }#}
 
-                    map.setCenter(results[0].geometry.location);
-                }
-            });
-        }
+    {#        function createMarker(place) {#}
+    {#            var marker = new google.maps.Marker({#}
+    {#                map: map,#}
+    {#                position: place.geometry.location#}
+    {#            });#}
 
-        function createMarker(place) {
-            var marker = new google.maps.Marker({
-                map: map,
-                position: place.geometry.location
-            });
-
-            google.maps.event.addListener(marker, 'click', function () {
-                infowindow.setContent(place.name);
-                infowindow.open(map, this);
-            });
-        }
-    </script>
+    {#            google.maps.event.addListener(marker, 'click', function () {#}
+    {#                infowindow.setContent(place.name);#}
+    {#                infowindow.open(map, this);#}
+    {#            });#}
+    {#        }#}
+    {#    </script>#}
 </head>
 
 <body id="page-top" class="sidebar-toggled">
@@ -80,21 +82,26 @@
         <!-- Main Content -->
         <div id="content">
             <!-- Google Tag Manager (noscript) -->
+            <div class="container-fluid">
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 class="h3 mb-0 text-gray-800">{% block head_title %}{{ 'lg.sparkles'|trans }}{% endblock %}</h1>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        {% block body %}{% endblock %}
+                    </div>
+                    <div class=" col-md-2">{% block body_side %}{% endblock %}</div>
+                </div>
+            </div>
+            <!-- End Google Tag Manager (noscript) -->
+            {# Si l'utilisateur est connecté #}
+            {% if app.user is not null %}
+                {{ render(controller('App\\Controller\\MenuController::menu')) }}
+            {% endif %}
             <noscript>
                 <iframe src="https://www.googletagmanager.com/ns.html?id={{ google_ua }}"
                         height="0" width="0" style="display:none;visibility:hidden"></iframe>
             </noscript>
-            <!-- End Google Tag Manager (noscript) -->
-            {# Si l'utilisateur est connecté #}
-            {% if app.user is not null %}
-                {{ include('component/menu.html.twig') }}
-            {% endif %}
-            <div class="container-fluid">
-                <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">{% block breadcrumbs %}{% endblock %}</h1>
-                </div>
-                {% block body %}{% endblock %}
-            </div>
         </div>
 
         <footer id="sticky-footer" class="py-4 bg-dark text-white-50">
@@ -130,41 +137,43 @@
     <script>require('assets/js/app/05-script.js');</script>
     <script>require('assets/js/app/31-sb-admin-2.js');</script>
     {% if app.user is not null %}
-        <script>var userId = '{{ app.user.token }}';</script>
-        <script src="http://tennis-meetup.fr:1337/socket.io/socket.io.js"></script>
-        <script>require('assets/js/app/04-client.js');</script>
+    <script>var userId = '{{ app.user.token }}';</script>
+    <script src="http://tennis-meetup.fr:1337/socket.io/socket.io.js"></script>
+    <script>require('assets/js/app/04-client.js');</script>
     {% endif %}
+    <script>document.addEventListener('DOMContentLoaded', () => { const player = Plyr.setup('.video'); });</script>
     <script type="text/javascript">
-        tarteaucitron.init({
-            "privacyUrl": "", /* Privacy policy url */
+		tarteaucitron.init({
+			"privacyUrl": "", /* Privacy policy url */
 
-            "cookieName": "tacsportmeetup", /* Cookie name */
+			"cookieName": "tacsportmeetup", /* Cookie name */
 
-            "orientation": "bottom", /* Banner position (top - bottom) */
-            "showAlertSmall": false, /* Show the small banner on bottom right */
-            "cookieslist": true, /* Show the cookie list */
+			"orientation": "bottom", /* Banner position (top - bottom) */
+			"showAlertSmall": false, /* Show the small banner on bottom right */
+			"cookieslist": true, /* Show the cookie list */
 
-            "adblocker": false, /* Show a Warning if an adblocker is detected */
-            "AcceptAllCta": true, /* Show the accept all button when highPrivacy on */
-            "highPrivacy": true, /* Disable auto consent */
-            "handleBrowserDNTRequest": false, /* If Do Not Track == 1, disallow all */
+			"adblocker": false, /* Show a Warning if an adblocker is detected */
+			"AcceptAllCta": true, /* Show the accept all button when highPrivacy on */
+			"highPrivacy": true, /* Disable auto consent */
+			"handleBrowserDNTRequest": false, /* If Do Not Track == 1, disallow all */
 
-            "removeCredit": false, /* Remove credit link */
-            "moreInfoLink": true, /* Show more info link */
-            "useExternalCss": false, /* If false, the tarteaucitron.css file will be loaded */
+			"removeCredit": false, /* Remove credit link */
+			"moreInfoLink": true, /* Show more info link */
+			"useExternalCss": false, /* If false, the tarteaucitron.css file will be loaded */
 
-            //"cookieDomain": ".my-multisite-domaine.fr", /* Shared cookie for multisite */
+			//"cookieDomain": ".my-multisite-domaine.fr", /* Shared cookie for multisite */
 
-            "readmoreLink": "/cookiespolicy" /* Change the default readmore link */
-        });
-        tarteaucitron.user.gtagUa = '{{ google_tag_ua }}';
-        tarteaucitron.user.gtagMore = function () {
-            dataLayer/* add here your optionnal gtag() */
-        };
-        (tarteaucitron.job = tarteaucitron.job || []).push('gtag');
-        tarteaucitron.user.googletagmanagerId = '{{ google_ua }}';
-        (tarteaucitron.job = tarteaucitron.job || []).push('googletagmanager');
+			"readmoreLink": "/cookiespolicy" /* Change the default readmore link */
+		});
+		tarteaucitron.user.gtagUa = '{{ google_tag_ua }}';
+		tarteaucitron.user.gtagMore = function () {
+			dataLayer/* add here your optionnal gtag() */
+		};
+		(tarteaucitron.job = tarteaucitron.job || []).push('gtag');
+		tarteaucitron.user.googletagmanagerId = '{{ google_ua }}';
+		(tarteaucitron.job = tarteaucitron.job || []).push('googletagmanager');
     </script>
+    <script src="https://cdn.plyr.io/3.6.2/plyr.js"></script>
 {% endblock %}
 
 </body>

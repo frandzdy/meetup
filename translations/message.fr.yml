@@ -1,5 +1,5 @@
 lg:
-    home: 'Acceuil'
+    home: 'Accueil'
     person:
         create: 'Inscription'
         edit: 'Modification de votre compte'
@@ -28,6 +28,7 @@ lg:
         log_out: 'Déconnexion'
     form:
         submit: 'Sauvergader'
+        post: 'Poster'
         update: 'Modifier'
         select: 'Choisissez'
     community: 'Communauté'
@@ -35,3 +36,6 @@ lg:
     setting: 'Paramètre'
     messages: 'Messages'
     send_message: 'Envoyer un message'
+    sparkles: 'Sparkles'
+    mur:
+        details: 'Mur Détails Message'

@@ -14,6 +14,7 @@ class HomeController extends AbstractController
     public function index(EntityManagerInterface $em)
     {
         $user = $this->getUser();
+        //$this->createForm();
 
         return $this->render('home/index.html.twig', [
             'user' => $user ? $user : [],

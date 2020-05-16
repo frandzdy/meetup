@@ -39,16 +39,22 @@ trait TraitDate
     /**
      * @param $createdAt
      * @return $this
-     * @ORM\PrePersist()
-     * @throws \Exception
      */
     public function setCreatedAt($createdAt): self
     {
-        $this->createdAt = new \DateTime('today');
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
+    /**
+     * @ORM\PrePersist()
+     * @throws \Exception
+     */
+    public function createdAt()
+    {
+        $this->createdAt = new \DateTime('now');
+    }
     /**
      * @return mixed
      */
@@ -60,14 +66,21 @@ trait TraitDate
     /**
      * @param $updatedAt
      * @return $this
-     * @ORM\PreUpdate()
-     * @throws \Exception
      */
     public function setUpdatedAt($updatedAt): self
     {
-        $this->updatedAt = new \DateTime('today');
+        $this->updatedAt = $updatedAt;
 
         return $this;
+    }
+
+    /**
+     * @ORM\PreUpdate()
+     * @throws \Exception
+     */
+    public function updatedAt()
+    {
+        $this->updatedAt = new \DateTime('now');
     }
 
     /**
@@ -81,12 +94,21 @@ trait TraitDate
     /**
      * @param $deletedAt
      * @return $this
-     * @ORM\PreRemove()
-     * @throws \Exception
      */
     public function setDeletedAt($deletedAt): self
     {
-        $this->deletedAt = new \DateTime('today');
+        $this->deletedAt = $deletedAt;
+
+        return $this;
+    }
+
+    /**
+     * @ORM\PreRemove()
+     * @throws \Exception
+     */
+    public function deletedAt($deletedAt): self
+    {
+        $this->deletedAt = new \DateTime('now');
 
         return $this;
     }
