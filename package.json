@@ -20,7 +20,7 @@
     "express": "^4.17.1",
     "md5": "^2.2.1",
     "mysql": "^2.17.1",
-    "socket.io": "^2.3.0",
+    "socket.io": "^2.4.0",
     "sweetalert": "^2.1.2",
     "minimist": ">=1.2.3",
     "acorn": ">=7.1.1",
